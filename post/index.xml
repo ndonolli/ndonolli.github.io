@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Post-rsses on Nathan&#39;s House of Code</title>
+    <link>https://ndonolli.herokuapp.com/post/index.xml</link>
+    <description>Recent content in Post-rsses on Nathan&#39;s House of Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
+    <lastBuildDate>Sat, 12 Nov 2016 18:34:37 -0600</lastBuildDate>
+    <atom:link href="https://ndonolli.herokuapp.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>A Meditation on Redux</title>
+      <link>https://ndonolli.herokuapp.com/post/redux/</link>
+      <pubDate>Sat, 12 Nov 2016 18:34:37 -0600</pubDate>
+      
+      <guid>https://ndonolli.herokuapp.com/post/redux/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve been thinking about Redux lately.  Everybody and their mother (and my mother) loves Redux, and that makes sense.  The Redux team &lt;em&gt;(read: Dan Abramov)&lt;/em&gt; bestows &lt;a href=&#34;http://redux.js.org/&#34;&gt;philosophical documentation&lt;/a&gt; that explain the three noble truths of Redux - the main one being that reducers are pure functions of state and action.  With immutable state, your application becomes much more predictable and testable.  If this sounds simple and you are asking why it isn&amp;rsquo;t just incorporated into the design of state-based rendering libraries like React, it&amp;rsquo;s because it kinda sorta is with flux, a library/design pattern used internally at Facebook of which Redux builds upon.&lt;/p&gt;
+
+&lt;p&gt;So, really, there&amp;rsquo;s not much to Redux.  But developers view it like a god damn necessity. The first page of the docs provides a plea from the creator himself on why you might not need Redux. By not using Redux, you risk introducing scalability issues as your app grows.  By including Redux, you risk wasting time writing boilerplate for your state, actions, and reducers for a view change that could have just been triggered with &lt;code&gt;setState()&lt;/code&gt;.  The only way to know if you&amp;rsquo;ll need Redux is to use it.  And even after using it, I&amp;rsquo;m still not sure what to think.&lt;/p&gt;
+
+&lt;p&gt;But I digress, this is not really about Redux. Redux is fantastic. This is about me understanding how to use Redux properly.  Let me give you an example: in building &lt;strong&gt;Grubbr&lt;/strong&gt;, a mobile app designed with react-native, we spent a good amount of time including/excluding Redux in our tech stack, flip flopping through the reasons stated above.  Ultimately, our final project architecture was laid out with the help of a react-native boilerplate library called &lt;a href=&#34;http://nativebase.io/&#34;&gt;Nativebase&lt;/a&gt;.  We still structured our codebase from scratch since we intended to use Nativebase primarily as a UI library, but we also kept their custom routing plugin, which was controlled through Redux actions and reducers.&lt;/p&gt;
+
+&lt;p&gt;Here was the first potential design flaw of the application: All views were rendered inside this custom navigator component.  Any components that needed to be globally accessible had to have been included in the same tier as the navigator component.  This isn&amp;rsquo;t too bad, and our app was essentially a collection of separate, non-nested views anyway.  But now the traditional method of passing data to child elements through props and state has to be thrown out the window.&lt;/p&gt;
+
+&lt;p&gt;This is where Redux kicked ass actually. Say we want a user object that contains their name, id, etc. and is created on login.  The id is used for any kind of POST request so the user object must be globally available to all views. Sure, we could use some cookie that contains some encrypted info, but why not set it simply to state?  With Redux, the global state persists throughout the whole application as a single object that contains state, route, location, etc.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function bindAction(dispatch) {
+  return {
+    openDrawer: () =&amp;gt; dispatch(openDrawer()),
+    replaceRoute: route =&amp;gt; dispatch(replaceRoute(route)),
+    pushNewRoute: route =&amp;gt; dispatch(pushNewRoute(route)),
+    setIndex: index =&amp;gt; dispatch(setIndex(index)),
+    popRoute: () =&amp;gt; dispatch(popRoute()),
+    setCurrentDish: dish =&amp;gt; dispatch(setCurrentDish(dish)),
+    setLocation: location =&amp;gt; dispatch(setLocation(location)),
+  };
+}
+function mapStateToProps(state) {
+  return {
+    name: state.user.name,
+    list: state.list.list,
+    results: state.search,
+    location: state.location.location,
+  };
+}
+export default connect(mapStateToProps, bindAction)(BestInTown);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But like all alchemy, one must give up something in order to receive something in return. In our case, we have given up the ease of managing a local state to dictate changes in an individual component&amp;rsquo;s UI.  Here&amp;rsquo;s another example: I wanted to include animations that would occur while the search was being conducted on the page. My normal method would be to set a &lt;code&gt;loading: false&lt;/code&gt; property in the initial local state, and triggering &lt;code&gt;setState({ loading: true })&lt;/code&gt; while waiting for the server request to return.  But now I gotta touch three files and create separate actions and reducers for this feature to come to fruition!&lt;/p&gt;
+
+&lt;p&gt;So what did I do? I just did it the way I knew how. The &amp;lsquo;Redux state&amp;rsquo; is a separate entity and is accessed through the props (thanks to a function which, believe it or not, is called &lt;code&gt;mapStateToProps&lt;/code&gt;) so theoretically you can handle both state objects without any fear that they would interfere with each other. The problem is that I felt dirty, like I had broken one of the pillars of the Redux way of truth. Concerns were still separated, with persisting data being held in the &amp;lsquo;Redux state&amp;rsquo; and primarily UI logic being handled thru the local state. But it&amp;rsquo;s all state to consider for the React DOM, and part of me feels like there could have been a better way to reason about things.&lt;/p&gt;
+
+&lt;p&gt;But the application worked marvelously, despite my concerns that views seemed to render two or three times too many. And I&amp;rsquo;ll say this - I believe it worked out because, in the end, Redux is a very natural, minimalistic suggestion to handling application state. It is a library, but not by much.  It&amp;rsquo;s more a way of thinking.  Take this example from the article explaining &lt;a href=&#34;https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367#.9c7c0ared&#34;&gt;why you may not need Redux&lt;/a&gt; written by Dan Abramov himself.  He first shows us a typical counter example in react using state:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;
+import React, { Component } from &#39;react&#39;;
+
+class Counter extends Component {
+  state = { value: 0 };
+
+  increment = () =&amp;gt; {
+    this.setState(prevState =&amp;gt; ({
+      value: prevState.value + 1
+    }));
+  };
+
+  decrement = () =&amp;gt; {
+    this.setState(prevState =&amp;gt; ({
+      value: prevState.value - 1
+    }));
+  };
+
+  render() {
+    return (
+      &amp;lt;div&amp;gt;
+        {this.state.value}
+        &amp;lt;button onClick={this.increment}&amp;gt;+&amp;lt;/button&amp;gt;
+        &amp;lt;button onClick={this.decrement}&amp;gt;-&amp;lt;/button&amp;gt;
+      &amp;lt;/div&amp;gt;
+    )
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then refactors it using actions, reducers, and dispatchers. But there&amp;rsquo;s no Redux installed at all! It&amp;rsquo;s just the design pattern:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;import React, { Component } from &#39;react&#39;;
+
+const counter = (state = { value: 0 }, action) =&amp;gt; {
+  switch (action.type) {
+    case &#39;INCREMENT&#39;:
+      return { value: state.value + 1 };
+    case &#39;DECREMENT&#39;:
+      return { value: state.value - 1 };
+    default:
+      return state;
+  }
+}
+
+class Counter extends Component {
+  state = counter(undefined, {});
+
+  dispatch(action) {
+    this.setState(prevState =&amp;gt; counter(prevState, action));
+  }
+
+  increment = () =&amp;gt; {
+    this.dispatch({ type: &#39;INCREMENT&#39; });
+  };
+
+  decrement = () =&amp;gt; {
+    this.dispatch({ type: &#39;DECREMENT&#39; });
+  };
+
+  render() {
+    return (
+      &amp;lt;div&amp;gt;
+        {this.state.value}
+        &amp;lt;button onClick={this.increment}&amp;gt;+&amp;lt;/button&amp;gt;
+        &amp;lt;button onClick={this.decrement}&amp;gt;-&amp;lt;/button&amp;gt;
+      &amp;lt;/div&amp;gt;
+    )
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So what should you use? Should you use Redux at all? Should you use it all the time? I implore you to meditate on this decision as I have done, and perhaps the wisdom of Dan Abramov will descend upon you. And he shall say &amp;lsquo;Yeah, probably&amp;rsquo;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Working with geolocation on a non-secure site</title>
+      <link>https://ndonolli.herokuapp.com/post/geolocation-non-secure/</link>
+      <pubDate>Sat, 08 Oct 2016 14:31:20 -0600</pubDate>
+      
+      <guid>https://ndonolli.herokuapp.com/post/geolocation-non-secure/</guid>
+      <description>&lt;p&gt;The last couple of days, our small development team &lt;strong&gt;BrutSoft&lt;/strong&gt; was working on some legacy code written by our friend Harvey for his app &amp;ldquo;Pick-up&amp;rdquo;. It is a simple web-app that organizes pick-up soccer games, sending out texts through Twilio&amp;rsquo;s SMS service. We wanted to expand this app to work on a mobile platform through the Ionic framework, add an authentication service, and extra geolocation features.&lt;/p&gt;
+
+&lt;p&gt;I opted to implement the geolocation features, initially utilizing the HTML5 native &lt;code&gt;navigator.geolocation&lt;/code&gt; API to grab the user&amp;rsquo;s location data and search for active games within a 10km radius. It was only after I had deployed the app that I learned that &lt;a href=&#34;https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only&#34;&gt;Google has discontinued support for geolocation on non-secure domains&lt;/a&gt;. Not wanting to deal with obtaining a SSL certificate, I quickly scrambled to find a new solution.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; I am in no way against Google&amp;rsquo;s decision to promote a safer web by requiring SSL certification for sensitive user information like geolocation. The beauty of the web is that many solutions exist and, so long as the web remains open, many problems will be solved and shared. This post is about one solution I found that worked for me.&lt;/p&gt;
+
+&lt;p&gt;Not interested in changing the codebase dramatically, I started searching for a third-party API that offered geolocation services. I settled on &lt;a href=&#34;http://ipinfo.io&#34;&gt;ipinfo.io&lt;/a&gt; which is a light, RESTful service and offers 1000 free API calls per day. There are many more that would probably work fine and I encourage further research, but I was sold on the simplicity of using this service. My original code wrapped the &lt;code&gt;getCurrentPosition()&lt;/code&gt; method in a promise, and then sent the game request on resolve.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;getLocation: function() {
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  return new Promise(function(resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+},
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;getCurrentPosition&lt;/code&gt; method is an asynchronous call, which necessitates the Promise wrapper in order to wait for the location to return before attaching it to the game request object, which is handled by an Angular controller.  Among the deprecation of this method for non-secure sites, there are a couple other things that are annoying:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;The browser will ask the user to grant the application permission to know their GPS location.  From a UX standpoint, this is not really ideal.  The native chrome alert box that pops up could seem a tad sketchy and insecure to some users, even if they were aware that the app used location to function.  It would be much better to ask for permission or inform the user through the app itself.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;If a user denies permission to reveal their location, whether on purpose or by accident, there is no way to reset this through the application.  The permissions are stored within the browser and there is no simple way to check, through your application, if a user has denied or granted geolocation permissions.  To the application, the &lt;code&gt;getLocation&lt;/code&gt; function will just timeout.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;By using &lt;em&gt;ipinfo.io&lt;/em&gt; there is no need to ask permission, which in my opinion is redundant considering the app is very clear about how it uses user&amp;rsquo;s locations.  It is one less thing to worry about on the user experience end and several lines of code shorter for the developer who should not have to worry about handling that extra logic.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;getLocation&lt;/code&gt; helper function was thus refactored to&amp;hellip;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;getLocation: function() {
+  return new Promise(function(resolve, reject) {
+    $.getJSON(&#39;https://ipinfo.io/geo&#39;, resolve);
+  });
+},
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip;which honestly isn&amp;rsquo;t that much different.  The return JSON data is mostly similar to how the Chrome geolocation object is structured, so just minor tweaks to the controller allowed this new code to fit in just dandily.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// ...
+.controller(&#39;TimeSelectController&#39;, function($scope, $location, GameReq, sharedProps) {
+  var gameReq = {};
+  $scope.findingLocation = false;
+
+  $scope.requestGame = function() {
+    console.log(&#39;requesting Game&#39;);
+    $scope.findingLocation = true;
+    helpers.getLocation()
+    .then(function(response) {
+      var loc = response.loc.split(&#39;,&#39;);
+      gameReq.location = {
+        latitude: +loc[0],
+        longitude: +loc[1],
+      };
+      gameReq.time = helpers.createGameTime($scope.data.selectedOption.hour);
+      gameReq.smsNum = $scope.smsNum;
+      gameReq.sport = $scope.sportInput;
+
+      GameReq.requestGame(gameReq)
+        // etc...      
+    })
+  }
+})
+// ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Remember, &lt;em&gt;ipinfo.io&lt;/em&gt; is one just one of many sites that offer geolocation as a service.  Find what works best for you if there comes a time where you can&amp;rsquo;t/don&amp;rsquo;t want to use the native geolocation features built into Chrome.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Objects of My Affliction</title>
+      <link>https://ndonolli.herokuapp.com/post/objectsOfMyAffliction/</link>
+      <pubDate>Tue, 02 Aug 2016 12:02:51 -0600</pubDate>
+      
+      <guid>https://ndonolli.herokuapp.com/post/objectsOfMyAffliction/</guid>
+      <description>&lt;p&gt;Javascript objects are a cozy bunch.  To define an object in javascript in the most basic, literal sense, you would write:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var myObject = {};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Keys and values may then be defined with bracket or dot-notation syntax, and objects are all instantiations of the parent &lt;code&gt;Object&lt;/code&gt; of which it inherits other methods and properties.  This syntax for displaying objects in Javascript has helped me to understand how objects are
+organized in other programming languages.&lt;/p&gt;
+
+&lt;p&gt;To a beginner, there are very easy-to-grasp similarities between the two languages.  Both have number and string datatypes, as well as similar syntax.  In both languages, arrays are designated with square brackets &lt;code&gt;[]&lt;/code&gt; and in general share similar properties.  However, Python utilizes curly (mustache?) brackets to denote a collection called a dictionary.&lt;/p&gt;
+
+&lt;p&gt;Again - on the surface, and especially to a beginner, there seems to be virtually no difference between Javascript&amp;rsquo;s objects and Python&amp;rsquo;s dictionaries.  Both are collections of key: value pairs - separated by commas with a colon between the key and value.  Take a look at this object in Javascript:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var myObject = {&#39;foo&#39;: &#39;bar&#39;};
+myObject[&#39;foo&#39;] // =&amp;gt;&#39;bar&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip;and then this dictionary in Python:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;my_dictionary = {&#39;foo&#39;: &#39;bar&#39;};
+my_dictionary[&#39;foo&#39;] // =&amp;gt; &#39;bar&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The differences here are cosmetic - Javascript requires the var keyword to declare a variable (kind of) whereas this is not required in Python.  Also, convention states that Javascript uses camel case where Python uses underscores.  But the initialization and retrieval of key: value pairs is almost identical.&lt;/p&gt;
+
+&lt;p&gt;But are Python dictionaries objects?  Technically, everything is an object in Python, but dictionaries !== objects in Javascript.  Here&amp;rsquo;s another example of a small difference.  In Python, we can set a variable as a key in a dictionary:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;i = &#39;k&#39;
+j = 1
+dict = {i: j}
+dict[&#39;k&#39;] // =&amp;gt; 1
+dict[i] // =&amp;gt; 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip;but trying the same thing in Javascript&amp;hellip;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var i = &#39;k&#39;
+var j = 1
+var obj = {i: j}
+obj[&#39;k&#39;] // =&amp;gt; undefined
+obj[i] // =&amp;gt; undefined
+obj[&#39;i&#39;] // =&amp;gt; 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that accessing &lt;code&gt;dict[&#39;i&#39;]&lt;/code&gt; would return undefined in Python, since it would be looking for the string &lt;code&gt;&#39;i&#39;&lt;/code&gt; as a key.  In Javascript, object keys are stored as strings and must be passed in as such when accessing with bracket notation.  Here is another example that exemplifies this.&lt;/p&gt;
+
+&lt;p&gt;In javascript, we can declare a literal object like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var obj = {name: &#39;Nathan&#39;}
+console.log(obj) // =&amp;gt; [object Object] {name: &#39;Nathan&#39;}
+console.log(obj[&#39;name&#39;]) // =&amp;gt; &#39;Nathan&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But in python we would get an error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;&amp;gt;&amp;gt;&amp;gt; obj = {name: &#39;Nathan&#39;}
+Traceback (most recent call last):
+  File &amp;quot;&amp;lt;input&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
+NameError: name  &#39;name&#39; is not defined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We get the error because the variable name is undefined, so Python raises the &lt;code&gt;NameError&lt;/code&gt; when given the key to obj.  In Javascript&amp;rsquo;s literal object notation, the keys within the brackets are converted to string datatypes.  We are now getting to the core of the difference between Javascript objects and Python dictionaries - which is, well, that Javascript objects are objects with properties and methods, which can inherit from parent objects and be used as a prototype for child objects.  Python dictionaries are more akin to mapped lists, in which each key can store a pointer or piece of data.  Both languages use bracket notation as constructors for these respective datatypes - and though they look similar, they vary greatly in their behaviors.  Here is one parting example, showing how Javascript objects can contain methods while Python dictionaries can store functions but not invoke them:&lt;/p&gt;
+
+&lt;p&gt;Javascript:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var obj = {
+  name: &#39;Nathan&#39;,
+  myName: function() {return obj.name;}
+};
+
+console.log(obj.myName()) // =&amp;gt; &#39;Nathan&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can call the method &lt;code&gt;myName&lt;/code&gt; with dot notation, which returns the property &lt;code&gt;name&lt;/code&gt; in obj. However in python:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def func():
+  return dict[&#39;name&#39;]
+
+dict = {
+  &#39;name&#39;: &#39;Nathan&#39;,
+  &#39;myName&#39;: func
+}
+
+dict[&#39;myName&#39;] // =&amp;gt; &amp;lt;function func at 0x100756f28&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Accessing &lt;code&gt;myName&lt;/code&gt; in dict gives us a pointer to the function we declared earlier in the code.  It is not an object method, and thus cannot be invoked the same way we could in Javascript.  The object literal notation is a very convenient way to create and manipulate objects within Javascript, but it&amp;rsquo;s important to recognize that it is also an abstract datatype, and the brackets are just a symbol to denote its data.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

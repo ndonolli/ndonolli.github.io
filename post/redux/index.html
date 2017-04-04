@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Meditation on Redux | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.herokuapp.com//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.herokuapp.com/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">November 12, 2016</h2>
+    <h1 class="title">A Meditation on Redux</h1>
+    <div class="content">
+      <p>I&rsquo;ve been thinking about Redux lately.  Everybody and their mother (and my mother) loves Redux, and that makes sense.  The Redux team <em>(read: Dan Abramov)</em> bestows <a href="http://redux.js.org/">philosophical documentation</a> that explain the three noble truths of Redux - the main one being that reducers are pure functions of state and action.  With immutable state, your application becomes much more predictable and testable.  If this sounds simple and you are asking why it isn&rsquo;t just incorporated into the design of state-based rendering libraries like React, it&rsquo;s because it kinda sorta is with flux, a library/design pattern used internally at Facebook of which Redux builds upon.</p>
+
+<p>So, really, there&rsquo;s not much to Redux.  But developers view it like a god damn necessity. The first page of the docs provides a plea from the creator himself on why you might not need Redux. By not using Redux, you risk introducing scalability issues as your app grows.  By including Redux, you risk wasting time writing boilerplate for your state, actions, and reducers for a view change that could have just been triggered with <code>setState()</code>.  The only way to know if you&rsquo;ll need Redux is to use it.  And even after using it, I&rsquo;m still not sure what to think.</p>
+
+<p>But I digress, this is not really about Redux. Redux is fantastic. This is about me understanding how to use Redux properly.  Let me give you an example: in building <strong>Grubbr</strong>, a mobile app designed with react-native, we spent a good amount of time including/excluding Redux in our tech stack, flip flopping through the reasons stated above.  Ultimately, our final project architecture was laid out with the help of a react-native boilerplate library called <a href="http://nativebase.io/">Nativebase</a>.  We still structured our codebase from scratch since we intended to use Nativebase primarily as a UI library, but we also kept their custom routing plugin, which was controlled through Redux actions and reducers.</p>
+
+<p>Here was the first potential design flaw of the application: All views were rendered inside this custom navigator component.  Any components that needed to be globally accessible had to have been included in the same tier as the navigator component.  This isn&rsquo;t too bad, and our app was essentially a collection of separate, non-nested views anyway.  But now the traditional method of passing data to child elements through props and state has to be thrown out the window.</p>
+
+<p>This is where Redux kicked ass actually. Say we want a user object that contains their name, id, etc. and is created on login.  The id is used for any kind of POST request so the user object must be globally available to all views. Sure, we could use some cookie that contains some encrypted info, but why not set it simply to state?  With Redux, the global state persists throughout the whole application as a single object that contains state, route, location, etc.</p>
+
+<pre><code class="language-javascript">function bindAction(dispatch) {
+  return {
+    openDrawer: () =&gt; dispatch(openDrawer()),
+    replaceRoute: route =&gt; dispatch(replaceRoute(route)),
+    pushNewRoute: route =&gt; dispatch(pushNewRoute(route)),
+    setIndex: index =&gt; dispatch(setIndex(index)),
+    popRoute: () =&gt; dispatch(popRoute()),
+    setCurrentDish: dish =&gt; dispatch(setCurrentDish(dish)),
+    setLocation: location =&gt; dispatch(setLocation(location)),
+  };
+}
+function mapStateToProps(state) {
+  return {
+    name: state.user.name,
+    list: state.list.list,
+    results: state.search,
+    location: state.location.location,
+  };
+}
+export default connect(mapStateToProps, bindAction)(BestInTown);
+</code></pre>
+
+<p>But like all alchemy, one must give up something in order to receive something in return. In our case, we have given up the ease of managing a local state to dictate changes in an individual component&rsquo;s UI.  Here&rsquo;s another example: I wanted to include animations that would occur while the search was being conducted on the page. My normal method would be to set a <code>loading: false</code> property in the initial local state, and triggering <code>setState({ loading: true })</code> while waiting for the server request to return.  But now I gotta touch three files and create separate actions and reducers for this feature to come to fruition!</p>
+
+<p>So what did I do? I just did it the way I knew how. The &lsquo;Redux state&rsquo; is a separate entity and is accessed through the props (thanks to a function which, believe it or not, is called <code>mapStateToProps</code>) so theoretically you can handle both state objects without any fear that they would interfere with each other. The problem is that I felt dirty, like I had broken one of the pillars of the Redux way of truth. Concerns were still separated, with persisting data being held in the &lsquo;Redux state&rsquo; and primarily UI logic being handled thru the local state. But it&rsquo;s all state to consider for the React DOM, and part of me feels like there could have been a better way to reason about things.</p>
+
+<p>But the application worked marvelously, despite my concerns that views seemed to render two or three times too many. And I&rsquo;ll say this - I believe it worked out because, in the end, Redux is a very natural, minimalistic suggestion to handling application state. It is a library, but not by much.  It&rsquo;s more a way of thinking.  Take this example from the article explaining <a href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367#.9c7c0ared">why you may not need Redux</a> written by Dan Abramov himself.  He first shows us a typical counter example in react using state:</p>
+
+<pre><code class="language-javascript">
+import React, { Component } from 'react';
+
+class Counter extends Component {
+  state = { value: 0 };
+
+  increment = () =&gt; {
+    this.setState(prevState =&gt; ({
+      value: prevState.value + 1
+    }));
+  };
+
+  decrement = () =&gt; {
+    this.setState(prevState =&gt; ({
+      value: prevState.value - 1
+    }));
+  };
+
+  render() {
+    return (
+      &lt;div&gt;
+        {this.state.value}
+        &lt;button onClick={this.increment}&gt;+&lt;/button&gt;
+        &lt;button onClick={this.decrement}&gt;-&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre>
+
+<p>And then refactors it using actions, reducers, and dispatchers. But there&rsquo;s no Redux installed at all! It&rsquo;s just the design pattern:</p>
+
+<pre><code class="language-javascript">import React, { Component } from 'react';
+
+const counter = (state = { value: 0 }, action) =&gt; {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { value: state.value + 1 };
+    case 'DECREMENT':
+      return { value: state.value - 1 };
+    default:
+      return state;
+  }
+}
+
+class Counter extends Component {
+  state = counter(undefined, {});
+
+  dispatch(action) {
+    this.setState(prevState =&gt; counter(prevState, action));
+  }
+
+  increment = () =&gt; {
+    this.dispatch({ type: 'INCREMENT' });
+  };
+
+  decrement = () =&gt; {
+    this.dispatch({ type: 'DECREMENT' });
+  };
+
+  render() {
+    return (
+      &lt;div&gt;
+        {this.state.value}
+        &lt;button onClick={this.increment}&gt;+&lt;/button&gt;
+        &lt;button onClick={this.decrement}&gt;-&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre>
+
+<p>So what should you use? Should you use Redux at all? Should you use it all the time? I implore you to meditate on this decision as I have done, and perhaps the wisdom of Dan Abramov will descend upon you. And he shall say &lsquo;Yeah, probably&rsquo;.</p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+

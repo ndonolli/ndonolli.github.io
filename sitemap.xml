@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://ndonolli.herokuapp.com/</loc>
+    <lastmod>2016-11-12T18:34:37-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.herokuapp.com/post/redux/</loc>
+    <lastmod>2016-11-12T18:34:37-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.herokuapp.com/post/geolocation-non-secure/</loc>
+    <lastmod>2016-10-08T14:31:20-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.herokuapp.com/post/objectsOfMyAffliction/</loc>
+    <lastmod>2016-08-02T12:02:51-06:00</lastmod>
+  </url>
+  
+</urlset>

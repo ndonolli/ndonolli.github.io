@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working with geolocation on a non-secure site | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.herokuapp.com//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.herokuapp.com/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">October 8, 2016</h2>
+    <h1 class="title">Working with geolocation on a non-secure site</h1>
+    <div class="content">
+      <p>The last couple of days, our small development team <strong>BrutSoft</strong> was working on some legacy code written by our friend Harvey for his app &ldquo;Pick-up&rdquo;. It is a simple web-app that organizes pick-up soccer games, sending out texts through Twilio&rsquo;s SMS service. We wanted to expand this app to work on a mobile platform through the Ionic framework, add an authentication service, and extra geolocation features.</p>
+
+<p>I opted to implement the geolocation features, initially utilizing the HTML5 native <code>navigator.geolocation</code> API to grab the user&rsquo;s location data and search for active games within a 10km radius. It was only after I had deployed the app that I learned that <a href="https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only">Google has discontinued support for geolocation on non-secure domains</a>. Not wanting to deal with obtaining a SSL certificate, I quickly scrambled to find a new solution.</p>
+
+<p><strong>Disclaimer:</strong> I am in no way against Google&rsquo;s decision to promote a safer web by requiring SSL certification for sensitive user information like geolocation. The beauty of the web is that many solutions exist and, so long as the web remains open, many problems will be solved and shared. This post is about one solution I found that worked for me.</p>
+
+<p>Not interested in changing the codebase dramatically, I started searching for a third-party API that offered geolocation services. I settled on <a href="http://ipinfo.io">ipinfo.io</a> which is a light, RESTful service and offers 1000 free API calls per day. There are many more that would probably work fine and I encourage further research, but I was sold on the simplicity of using this service. My original code wrapped the <code>getCurrentPosition()</code> method in a promise, and then sent the game request on resolve.</p>
+
+<pre><code class="language-javascript">getLocation: function() {
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  return new Promise(function(resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+},
+</code></pre>
+
+<p>The <code>getCurrentPosition</code> method is an asynchronous call, which necessitates the Promise wrapper in order to wait for the location to return before attaching it to the game request object, which is handled by an Angular controller.  Among the deprecation of this method for non-secure sites, there are a couple other things that are annoying:</p>
+
+<ol>
+<li><p>The browser will ask the user to grant the application permission to know their GPS location.  From a UX standpoint, this is not really ideal.  The native chrome alert box that pops up could seem a tad sketchy and insecure to some users, even if they were aware that the app used location to function.  It would be much better to ask for permission or inform the user through the app itself.</p></li>
+
+<li><p>If a user denies permission to reveal their location, whether on purpose or by accident, there is no way to reset this through the application.  The permissions are stored within the browser and there is no simple way to check, through your application, if a user has denied or granted geolocation permissions.  To the application, the <code>getLocation</code> function will just timeout.</p></li>
+</ol>
+
+<p>By using <em>ipinfo.io</em> there is no need to ask permission, which in my opinion is redundant considering the app is very clear about how it uses user&rsquo;s locations.  It is one less thing to worry about on the user experience end and several lines of code shorter for the developer who should not have to worry about handling that extra logic.</p>
+
+<p>The <code>getLocation</code> helper function was thus refactored to&hellip;</p>
+
+<pre><code class="language-javascript">getLocation: function() {
+  return new Promise(function(resolve, reject) {
+    $.getJSON('https://ipinfo.io/geo', resolve);
+  });
+},
+</code></pre>
+
+<p>&hellip;which honestly isn&rsquo;t that much different.  The return JSON data is mostly similar to how the Chrome geolocation object is structured, so just minor tweaks to the controller allowed this new code to fit in just dandily.</p>
+
+<pre><code class="language-javascript">// ...
+.controller('TimeSelectController', function($scope, $location, GameReq, sharedProps) {
+  var gameReq = {};
+  $scope.findingLocation = false;
+
+  $scope.requestGame = function() {
+    console.log('requesting Game');
+    $scope.findingLocation = true;
+    helpers.getLocation()
+    .then(function(response) {
+      var loc = response.loc.split(',');
+      gameReq.location = {
+        latitude: +loc[0],
+        longitude: +loc[1],
+      };
+      gameReq.time = helpers.createGameTime($scope.data.selectedOption.hour);
+      gameReq.smsNum = $scope.smsNum;
+      gameReq.sport = $scope.sportInput;
+
+      GameReq.requestGame(gameReq)
+        // etc...      
+    })
+  }
+})
+// ...
+</code></pre>
+
+<p>Remember, <em>ipinfo.io</em> is one just one of many sites that offer geolocation as a service.  Find what works best for you if there comes a time where you can&rsquo;t/don&rsquo;t want to use the native geolocation features built into Chrome.</p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
