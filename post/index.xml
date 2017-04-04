@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Post-rsses on Nathan&#39;s House of Code</title>
-    <link>https://ndonolli.herokuapp.com/post/index.xml</link>
+    <link>https://ndonolli.github.io/post/index.xml</link>
     <description>Recent content in Post-rsses on Nathan&#39;s House of Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
     <lastBuildDate>Sat, 12 Nov 2016 18:34:37 -0600</lastBuildDate>
-    <atom:link href="https://ndonolli.herokuapp.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ndonolli.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>A Meditation on Redux</title>
-      <link>https://ndonolli.herokuapp.com/post/redux/</link>
+      <link>https://ndonolli.github.io/post/redux/</link>
       <pubDate>Sat, 12 Nov 2016 18:34:37 -0600</pubDate>
       
-      <guid>https://ndonolli.herokuapp.com/post/redux/</guid>
+      <guid>https://ndonolli.github.io/post/redux/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve been thinking about Redux lately.  Everybody and their mother (and my mother) loves Redux, and that makes sense.  The Redux team &lt;em&gt;(read: Dan Abramov)&lt;/em&gt; bestows &lt;a href=&#34;http://redux.js.org/&#34;&gt;philosophical documentation&lt;/a&gt; that explain the three noble truths of Redux - the main one being that reducers are pure functions of state and action.  With immutable state, your application becomes much more predictable and testable.  If this sounds simple and you are asking why it isn&amp;rsquo;t just incorporated into the design of state-based rendering libraries like React, it&amp;rsquo;s because it kinda sorta is with flux, a library/design pattern used internally at Facebook of which Redux builds upon.&lt;/p&gt;
 
 &lt;p&gt;So, really, there&amp;rsquo;s not much to Redux.  But developers view it like a god damn necessity. The first page of the docs provides a plea from the creator himself on why you might not need Redux. By not using Redux, you risk introducing scalability issues as your app grows.  By including Redux, you risk wasting time writing boilerplate for your state, actions, and reducers for a view change that could have just been triggered with &lt;code&gt;setState()&lt;/code&gt;.  The only way to know if you&amp;rsquo;ll need Redux is to use it.  And even after using it, I&amp;rsquo;m still not sure what to think.&lt;/p&gt;
@@ -132,10 +132,10 @@ class Counter extends Component {
     
     <item>
       <title>Working with geolocation on a non-secure site</title>
-      <link>https://ndonolli.herokuapp.com/post/geolocation-non-secure/</link>
+      <link>https://ndonolli.github.io/post/geolocation-non-secure/</link>
       <pubDate>Sat, 08 Oct 2016 14:31:20 -0600</pubDate>
       
-      <guid>https://ndonolli.herokuapp.com/post/geolocation-non-secure/</guid>
+      <guid>https://ndonolli.github.io/post/geolocation-non-secure/</guid>
       <description>&lt;p&gt;The last couple of days, our small development team &lt;strong&gt;BrutSoft&lt;/strong&gt; was working on some legacy code written by our friend Harvey for his app &amp;ldquo;Pick-up&amp;rdquo;. It is a simple web-app that organizes pick-up soccer games, sending out texts through Twilio&amp;rsquo;s SMS service. We wanted to expand this app to work on a mobile platform through the Ionic framework, add an authentication service, and extra geolocation features.&lt;/p&gt;
 
 &lt;p&gt;I opted to implement the geolocation features, initially utilizing the HTML5 native &lt;code&gt;navigator.geolocation&lt;/code&gt; API to grab the user&amp;rsquo;s location data and search for active games within a 10km radius. It was only after I had deployed the app that I learned that &lt;a href=&#34;https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only&#34;&gt;Google has discontinued support for geolocation on non-secure domains&lt;/a&gt;. Not wanting to deal with obtaining a SSL certificate, I quickly scrambled to find a new solution.&lt;/p&gt;
@@ -211,10 +211,10 @@ class Counter extends Component {
     
     <item>
       <title>The Objects of My Affliction</title>
-      <link>https://ndonolli.herokuapp.com/post/objectsOfMyAffliction/</link>
+      <link>https://ndonolli.github.io/post/objectsOfMyAffliction/</link>
       <pubDate>Tue, 02 Aug 2016 12:02:51 -0600</pubDate>
       
-      <guid>https://ndonolli.herokuapp.com/post/objectsOfMyAffliction/</guid>
+      <guid>https://ndonolli.github.io/post/objectsOfMyAffliction/</guid>
       <description>&lt;p&gt;Javascript objects are a cozy bunch.  To define an object in javascript in the most basic, literal sense, you would write:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var myObject = {};
