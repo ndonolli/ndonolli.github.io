@@ -44,10 +44,15 @@
 &amp;lt;/Drawer&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The problem I&amp;rsquo;m addressing has to do with the &lt;strong&gt;animation&lt;/strong&gt; of the drawer open/close.  Mainly being:
-1. The drawer displaces the screen when opened
-2. The screen fades to white, where most native apps fade to black.
-3. The tween animation is rough and fast.&lt;/p&gt;
+&lt;p&gt;The problem I&amp;rsquo;m addressing has to do with the &lt;strong&gt;animation&lt;/strong&gt; of the drawer open/close.  Mainly being:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;The drawer displaces the screen when opened&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The screen fades to white, where most native apps fade to black.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The tween animation is rough and fast.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;All these issues can be solved by passing the right prop values into this component.  Take note:&lt;/p&gt;
 
