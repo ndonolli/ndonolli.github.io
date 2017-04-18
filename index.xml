@@ -7,8 +7,83 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
-    <lastBuildDate>Sat, 12 Nov 2016 18:34:37 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 18 Apr 2017 12:52:20 -0500</lastBuildDate>
     <atom:link href="https://ndonolli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Getting Your React Native Drawer to Behave Juuuuuuust Right</title>
+      <link>https://ndonolli.github.io/post/sexy-react-native-drawers/</link>
+      <pubDate>Tue, 18 Apr 2017 12:52:20 -0500</pubDate>
+      
+      <guid>https://ndonolli.github.io/post/sexy-react-native-drawers/</guid>
+      <description>&lt;p&gt;The &amp;ldquo;native&amp;rdquo; half of React-native is why so many web developers get so giddy about it.  A technology that binds to native mobile platform APIs on top of the already-popular React library is a welcome addition to the new wave of web-to-mobile solutions, many of which rely on custom components rendered within webkit (which is also still great).  Where react-native shines is that your picker will look like an iOs picker, your buttons will fade that right way when you click it, and the app will just &amp;ldquo;feel&amp;rdquo; like a real app.&lt;/p&gt;
+
+&lt;p&gt;Is this a reason to make the switch?  Not really.  The importance of having a &amp;ldquo;native feeling&amp;rdquo; app weighs on the product owner, and even within react-native, certain components aren&amp;rsquo;t &lt;em&gt;quite&lt;/em&gt; there yet.&lt;/p&gt;
+
+&lt;p&gt;But usually you can make due.  I&amp;rsquo;m a big fan of &lt;a href=&#34;https://github.com/root-two/react-native-drawer&#34;&gt;react-native-drawer&lt;/a&gt;, which gives you a customizable drawer component akin to the kind you see in many Android apps.  If you start with a boilerplate/generator that includes this package, the drawer will usually render with default settings that (in my opinion) do not mimic the look and feel of a typical Android drawer. The documentation can be a little spacey, so I&amp;rsquo;ll show you the few, small tweaks I make to get this looking right.&lt;/p&gt;
+
+&lt;p&gt;Bear with me for a sec - this is how the &lt;code&gt;&amp;lt;Drawer&amp;gt;&lt;/code&gt; component is rendered using a standard &lt;a href=&#34;https://github.com/infinitered/ignite&#34;&gt;Ignite&lt;/a&gt; template, a cli-interface generator I like to bootstrap react-native projects with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;&amp;lt;Drawer
+  ref=&#39;navigation&#39;
+  type=&#39;displace&#39;
+  open={state.open}
+  onOpen={() =&amp;gt; NavigationActions.refresh({key: state.key, open: true})}
+  onClose={() =&amp;gt; NavigationActions.refresh({key: state.key, open: false})}
+  content={&amp;lt;DrawerContent /&amp;gt;}
+  styles={Styles}
+  tapToClose
+  openDrawerOffset={0.2}
+  panCloseMask={0.2}
+  negotiatePan
+  tweenHandler={(ratio) =&amp;gt; ({
+    main: { opacity: Math.max(0.54, 1 - ratio) }
+  })}
+&amp;gt;
+  &amp;lt;DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} /&amp;gt;
+&amp;lt;/Drawer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The problem I&amp;rsquo;m addressing has to do with the &lt;strong&gt;animation&lt;/strong&gt; of the drawer open/close.  Mainly being:
+1. The drawer displaces the screen when opened
+2. The screen fades to white, where most native apps fade to black.
+3. The tween animation is rough and fast.&lt;/p&gt;
+
+&lt;p&gt;All these issues can be solved by passing the right prop values into this component.  Take note:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;&amp;lt;Drawer
+  ref=&#39;navigation&#39;
+  type=&#39;overlay&#39;
+  open={state.open}
+  onOpen={() =&amp;gt; NavigationActions.refresh({key: state.key, open: true})}
+  onClose={() =&amp;gt; NavigationActions.refresh({key: state.key, open: false})}
+  content={&amp;lt;DrawerContent /&amp;gt;}
+  styles={Styles}
+  tapToClose
+  openDrawerOffset={0.2}
+  panCloseMask={0.2}
+  negotiatePan
+  tweenHandler={(ratio) =&amp;gt; ({
+    mainOverlay: {
+      opacity: ratio / 2,
+      backgroundColor: &#39;black&#39;
+    },
+    drawer: {
+      shadowRadius: Math.min(ratio * 5 * 5, 5)
+    }
+  })}
+  tweenEasing=&#39;easeOutQuint&#39;
+  tweenDuration={800}
+&amp;gt;
+  &amp;lt;DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} /&amp;gt;
+&amp;lt;/Drawer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;First, &lt;code&gt;type=&#39;displace&#39;&lt;/code&gt; can be changed to &lt;code&gt;type=&#39;overlay&#39;&lt;/code&gt; - solving that first issue easily.  The rest can be fixed by editing some of the tween configurations.  The &lt;code&gt;tweenHandler&lt;/code&gt;, for example, takes a function that manipulates other properties based on the current state of the animation sequence.  With this, we can get our faded black backround, as well as adding a dynamic &lt;code&gt;shadowRadius&lt;/code&gt; to give a popping effect that the drawer hovers above the screen.  As for the third point, the &lt;em&gt;actual&lt;/em&gt; tween function can be determined by &lt;code&gt;tweenEasing&lt;/code&gt;, which takes a string corresponding to one of the functions defined in the &lt;a href=&#34;https://github.com/chenglou/tween-functions&#34;&gt;tween-functions&lt;/a&gt; package, which comes as a dependency with &lt;code&gt;react-native-drawer&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;As with the tween-function and other tweaks, you should experiment to find the drawer that fits your fancy. But never settle for less.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>A Meditation on Redux</title>

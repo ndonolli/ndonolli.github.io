@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Your React Native Drawer to Behave Juuuuuuust Right | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.github.io//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.github.io/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">April 18, 2017</h2>
+    <h1 class="title">Getting Your React Native Drawer to Behave Juuuuuuust Right</h1>
+    <div class="content">
+      <p>The &ldquo;native&rdquo; half of React-native is why so many web developers get so giddy about it.  A technology that binds to native mobile platform APIs on top of the already-popular React library is a welcome addition to the new wave of web-to-mobile solutions, many of which rely on custom components rendered within webkit (which is also still great).  Where react-native shines is that your picker will look like an iOs picker, your buttons will fade that right way when you click it, and the app will just &ldquo;feel&rdquo; like a real app.</p>
+
+<p>Is this a reason to make the switch?  Not really.  The importance of having a &ldquo;native feeling&rdquo; app weighs on the product owner, and even within react-native, certain components aren&rsquo;t <em>quite</em> there yet.</p>
+
+<p>But usually you can make due.  I&rsquo;m a big fan of <a href="https://github.com/root-two/react-native-drawer">react-native-drawer</a>, which gives you a customizable drawer component akin to the kind you see in many Android apps.  If you start with a boilerplate/generator that includes this package, the drawer will usually render with default settings that (in my opinion) do not mimic the look and feel of a typical Android drawer. The documentation can be a little spacey, so I&rsquo;ll show you the few, small tweaks I make to get this looking right.</p>
+
+<p>Bear with me for a sec - this is how the <code>&lt;Drawer&gt;</code> component is rendered using a standard <a href="https://github.com/infinitered/ignite">Ignite</a> template, a cli-interface generator I like to bootstrap react-native projects with:</p>
+
+<pre><code class="language-javascript">&lt;Drawer
+  ref='navigation'
+  type='displace'
+  open={state.open}
+  onOpen={() =&gt; NavigationActions.refresh({key: state.key, open: true})}
+  onClose={() =&gt; NavigationActions.refresh({key: state.key, open: false})}
+  content={&lt;DrawerContent /&gt;}
+  styles={Styles}
+  tapToClose
+  openDrawerOffset={0.2}
+  panCloseMask={0.2}
+  negotiatePan
+  tweenHandler={(ratio) =&gt; ({
+    main: { opacity: Math.max(0.54, 1 - ratio) }
+  })}
+&gt;
+  &lt;DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} /&gt;
+&lt;/Drawer&gt;
+</code></pre>
+
+<p>The problem I&rsquo;m addressing has to do with the <strong>animation</strong> of the drawer open/close.  Mainly being:
+1. The drawer displaces the screen when opened
+2. The screen fades to white, where most native apps fade to black.
+3. The tween animation is rough and fast.</p>
+
+<p>All these issues can be solved by passing the right prop values into this component.  Take note:</p>
+
+<pre><code class="language-javascript">&lt;Drawer
+  ref='navigation'
+  type='overlay'
+  open={state.open}
+  onOpen={() =&gt; NavigationActions.refresh({key: state.key, open: true})}
+  onClose={() =&gt; NavigationActions.refresh({key: state.key, open: false})}
+  content={&lt;DrawerContent /&gt;}
+  styles={Styles}
+  tapToClose
+  openDrawerOffset={0.2}
+  panCloseMask={0.2}
+  negotiatePan
+  tweenHandler={(ratio) =&gt; ({
+    mainOverlay: {
+      opacity: ratio / 2,
+      backgroundColor: 'black'
+    },
+    drawer: {
+      shadowRadius: Math.min(ratio * 5 * 5, 5)
+    }
+  })}
+  tweenEasing='easeOutQuint'
+  tweenDuration={800}
+&gt;
+  &lt;DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} /&gt;
+&lt;/Drawer&gt;
+</code></pre>
+
+<p>First, <code>type='displace'</code> can be changed to <code>type='overlay'</code> - solving that first issue easily.  The rest can be fixed by editing some of the tween configurations.  The <code>tweenHandler</code>, for example, takes a function that manipulates other properties based on the current state of the animation sequence.  With this, we can get our faded black backround, as well as adding a dynamic <code>shadowRadius</code> to give a popping effect that the drawer hovers above the screen.  As for the third point, the <em>actual</em> tween function can be determined by <code>tweenEasing</code>, which takes a string corresponding to one of the functions defined in the <a href="https://github.com/chenglou/tween-functions">tween-functions</a> package, which comes as a dependency with <code>react-native-drawer</code>.</p>
+
+<p>As with the tween-function and other tweaks, you should experiment to find the drawer that fits your fancy. But never settle for less.</p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
