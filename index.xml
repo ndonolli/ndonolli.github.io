@@ -7,8 +7,40 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
-    <lastBuildDate>Thu, 04 May 2017 12:28:36 -0500</lastBuildDate>
+    <lastBuildDate>Thu, 04 May 2017 23:04:33 -0500</lastBuildDate>
     <atom:link href="https://ndonolli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>To vim or not to vim</title>
+      <link>https://ndonolli.github.io/post/vim/</link>
+      <pubDate>Thu, 04 May 2017 23:04:33 -0500</pubDate>
+      
+      <guid>https://ndonolli.github.io/post/vim/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://ucarecdn.com/18f71672-5e94-4f74-9cf4-b840507509b0/&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;I am not good with vim.  I use it for git commits and for when my &lt;em&gt;bash-fu&lt;/em&gt; is not strong enough to make file changes with one command.  I like it better than nano.&lt;/p&gt;
+
+&lt;p&gt;For a while now, I&amp;rsquo;ve been trying to change my ways.  vim is everywhere.  It&amp;rsquo;s on Linux.  Linux is everywhere.  To achieve at least some level of proficiency with the vim text editor could give one a tremendous advantage working within a shell.  I grew tired of my walking-on-eggshells workflow of &lt;em&gt;press i -&amp;gt; press keys -&amp;gt; press ESC + :wq and pray&lt;/em&gt; to touch files, and decided enough was enough - &lt;strong&gt;I was going to actually learn vim.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;But it hasn&amp;rsquo;t happened yet.  I still switch to the arrow keys when my stream of &lt;em&gt;hjkls&lt;/em&gt; spaz out the cursor.  The other day I accidentally recorded a macro and didn&amp;rsquo;t know how to stop it (my current solution: quit vim). Yes, I could be devoting more time to it.  No, I haven&amp;rsquo;t set my IDE to vim mode.  Somewhere along the journey, possibly before it even started, I stopped caring.  And so the conflict remains: should I care?  Will learning vim make me a more effective software engineer?&lt;/p&gt;
+
+&lt;p&gt;I believe the answer is a soft &lt;em&gt;maybe&lt;/em&gt;.  vim is old, but it withstood the test of time and won the hearts and minds of many a developer.  The fact that vim is more alive than ever is actually pretty amazing.  vim is older than I am - the first computer I recall using was an IBM Aptiva running Windows 95, which was released four years after vim and even longer after its precursor vi was a POSIX standard.  Modern computers can run newer, heavier IDEs with little difference in speed, and yet vim remains the IDE of choice for many veteran and even junior software developers.&lt;/p&gt;
+
+&lt;p&gt;As I understand it, vim&amp;rsquo;s appeal is on two fronts: accessibility and speed. The speed aspect is due its specific set of bindings which, when learned, can allow you to quickly traverse and edit text without the need for a mouse or touchpad.  On top of that, vim&amp;rsquo;s bindings are organized by different modes, allowing modularity and a larger set of binding options.  Unfortunately, this is one of the primary hurdles of learning vim.  There are many key bindings, and they are not intuitive to users of modern text editors which utilize a different of shortcuts.  Those who master the bindings, however, can blaze through a document with the ability to select specific patterns, move whole lines, and other specific features all without touching the mouse.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.terminally-incoherent.com/blog/wp-content/uploads/2012/03/vimcheat-640x272.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Lesson 1: Hit your head against the keyboard repeatedly&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The accessibility aspect is due to the fact that vim exists on most UNIX and Linux flavored operating systems, and it runs in the terminal.  If you need to SSH into a remote server and edit a text file, you can bet you can do it with vim.  Existing as a command line application, vim has easy access to the rest of the system through its extensibility.  It is written in C but ships with its own scripting language used for plugins and extensions. If your vim looks underfeatured compared to your beefed up atom IDE, it&amp;rsquo;s probably because you never beefed up your vim.  Any modern vim user probably extends it with syntax highlighting, version control integration, directory trees - really anything you find in any new IDE.  And when you encounter vanilla vim on another machine?  Hey, you already know the bindings.&lt;/p&gt;
+
+&lt;p&gt;I should retract my previous statement. &lt;em&gt;I do care about learning vim&lt;/em&gt;.  It&amp;rsquo;s just work, and I can&amp;rsquo;t get over the irony that I&amp;rsquo;m doing work in order to become faster at, well, doing work.  What really intrigues me to learn is the accessibility advantage.  Like bash, vim is a program that lives on because &lt;em&gt;other people use it&lt;/em&gt;, and what other indication of quality software do you need?&lt;/p&gt;
+
+&lt;p&gt;For the record, I hate writing bash scripts too.  Or rather, I used to hate it.  Once you get past the old-school, memory-saving syntax of this weird, geeky language - good god is it useful.  It&amp;rsquo;s the glue of Linux, and no higher-level python script can come close to taking its place.  The same applies to vim, probably for the next twenty years.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>at&amp;t_irl</title>
