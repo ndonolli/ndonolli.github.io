@@ -7,8 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
-    <lastBuildDate>Tue, 18 Apr 2017 12:52:20 -0500</lastBuildDate>
+    <lastBuildDate>Thu, 04 May 2017 12:28:36 -0500</lastBuildDate>
     <atom:link href="https://ndonolli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>On AT&amp;T</title>
+      <link>https://ndonolli.github.io/post/att/</link>
+      <pubDate>Thu, 04 May 2017 12:28:36 -0500</pubDate>
+      
+      <guid>https://ndonolli.github.io/post/att/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://d1sui4xqepm0ps.cloudfront.net/memes/1970-at-t-subsidiary-bell-labs-deve.jpeg&#34; alt=&#34;memes can only express what words cannot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That is all.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting Your React Native Drawer to Behave Juuuuuuust Right</title>
