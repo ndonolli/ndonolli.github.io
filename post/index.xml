@@ -12,13 +12,13 @@
     
     <item>
       <title>Let the fors flow through you</title>
-      <link>https://ndonolli.github.io/post/gimme-closure/</link>
+      <link>https://ndonolli.github.io/post/let-the-fors/</link>
       <pubDate>Tue, 09 May 2017 10:38:10 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/gimme-closure/</guid>
+      <guid>https://ndonolli.github.io/post/let-the-fors/</guid>
       <description>&lt;p&gt;What&amp;rsquo;s wrong with &lt;code&gt;var&lt;/code&gt;?  Well, a great many things, but is it really that bad?  Kind of.&lt;/p&gt;
 
-&lt;p&gt;I can&amp;rsquo;t find any good reasons where &lt;code&gt;var&lt;/code&gt; gives you a legitimate advantage over &lt;code&gt;let&lt;/code&gt; or &lt;code&gt;const&lt;/code&gt;.  All other major languages use block scoping, and with the ES6 initiative to welcome a new &lt;code&gt;class&lt;/code&gt; of developers who come from stricter, safer languages, the &lt;code&gt;var&lt;/code&gt; keyword will only cause confusion.  On top of that, the light restrictions of &lt;code&gt;const&lt;/code&gt; will enforce better paradigms like functional programming and immutable data structures.&lt;/p&gt;
+&lt;p&gt;I can&amp;rsquo;t find any good reasons where &lt;code&gt;var&lt;/code&gt; gives you a legitimate advantage over &lt;code&gt;let&lt;/code&gt; or &lt;code&gt;const&lt;/code&gt;.  All other major languages use block scoping, and with the ES6 initiative to welcome a new &lt;code&gt;class&lt;/code&gt; of developers who come from stricter, safer languages, the &lt;code&gt;var&lt;/code&gt; keyword will only cause confusion.  On top of that, the light restrictions of &lt;code&gt;const&lt;/code&gt; will enforce better paradigms like functional, data-driven programming and immutable data structures.&lt;/p&gt;
 
 &lt;p&gt;You should absolutely use &lt;code&gt;let&lt;/code&gt; on for loops to block scope your iterator.  Here&amp;rsquo;s a case where using &lt;code&gt;var&lt;/code&gt; goes too far:&lt;/p&gt;
 
@@ -37,7 +37,7 @@ funcs.forEach(func =&amp;gt; func.call());
 // &amp;quot;value of i: 3&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Oh snap! Do you see it? That pesky &lt;code&gt;var&lt;/code&gt; declares &lt;code&gt;i&lt;/code&gt; as a global variable, so all functions in &lt;code&gt;func&lt;/code&gt; access it while it is equal to 3.  Wrap it in a function, it still doesn&amp;rsquo;t matter.  &amp;ldquo;But what about closure?&amp;rdquo; you ask, believing that each function in func should hold its own &lt;code&gt;i&lt;/code&gt; in context.  This should be true, and expected since closures are another feature of functional programming languages that allow for techniques like composition.  However, due to the lack of block scope when using &lt;code&gt;var&lt;/code&gt;, this unfortunately ruins that advantage. Reading this David Shariff&amp;rsquo;s article on the &lt;a href=&#34;http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/&#34;&gt;Javascript Execution Context&lt;/a&gt; may clear up some things.&lt;/p&gt;
+&lt;p&gt;Oh snap! Do you see it? That pesky &lt;code&gt;var&lt;/code&gt; declares &lt;code&gt;i&lt;/code&gt; as a global variable, so all functions in &lt;code&gt;func&lt;/code&gt; access it while it is equal to 3.  Wrap it in a function, it still doesn&amp;rsquo;t matter.  &amp;ldquo;But what about closure?&amp;rdquo; you ask, believing that each function in func should hold its own &lt;code&gt;i&lt;/code&gt; in context.  This should be true, and expected since closures are another feature of functional programming languages that allow for techniques like composition.  However, due to the lack of block scope when using &lt;code&gt;var&lt;/code&gt;, this unfortunately ruins that advantage. Reading David Shariff&amp;rsquo;s article on the &lt;a href=&#34;http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/&#34;&gt;Javascript Execution Context&lt;/a&gt; may clear up some things.&lt;/p&gt;
 
 &lt;p&gt;Don&amp;rsquo;t &lt;code&gt;let&lt;/code&gt; yourself be fooled.  &lt;code&gt;let&lt;/code&gt; and &lt;code&gt;const&lt;/code&gt; are intended to replace &lt;code&gt;var&lt;/code&gt;, and while we&amp;rsquo;ll see old code on the web for quite some time, we are responsible for what developers will see in the future.&lt;/p&gt;
 
