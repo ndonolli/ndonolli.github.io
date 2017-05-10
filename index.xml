@@ -385,10 +385,10 @@ class Counter extends Component {
     
     <item>
       <title>The Objects of My Affliction</title>
-      <link>https://ndonolli.github.io/post/objectsOfMyAffliction/</link>
+      <link>https://ndonolli.github.io/post/objects-of-my-affliction/</link>
       <pubDate>Tue, 02 Aug 2016 12:02:51 -0600</pubDate>
       
-      <guid>https://ndonolli.github.io/post/objectsOfMyAffliction/</guid>
+      <guid>https://ndonolli.github.io/post/objects-of-my-affliction/</guid>
       <description>&lt;p&gt;Javascript objects are a cozy bunch.  To define an object in javascript in the most basic, literal sense, you would write:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var myObject = {};

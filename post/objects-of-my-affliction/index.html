@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Objects of My Affliction | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.github.io//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.github.io/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">August 2, 2016</h2>
+    <h1 class="title">The Objects of My Affliction</h1>
+    <div class="content">
+      <p>Javascript objects are a cozy bunch.  To define an object in javascript in the most basic, literal sense, you would write:</p>
+
+<pre><code class="language-javascript">var myObject = {};
+</code></pre>
+
+<p>Keys and values may then be defined with bracket or dot-notation syntax, and objects are all instantiations of the parent <code>Object</code> of which it inherits other methods and properties.  This syntax for displaying objects in Javascript has helped me to understand how objects are
+organized in other programming languages.</p>
+
+<p>To a beginner, there are very easy-to-grasp similarities between the two languages.  Both have number and string datatypes, as well as similar syntax.  In both languages, arrays are designated with square brackets <code>[]</code> and in general share similar properties.  However, Python utilizes curly (mustache?) brackets to denote a collection called a dictionary.</p>
+
+<p>Again - on the surface, and especially to a beginner, there seems to be virtually no difference between Javascript&rsquo;s objects and Python&rsquo;s dictionaries.  Both are collections of key: value pairs - separated by commas with a colon between the key and value.  Take a look at this object in Javascript:</p>
+
+<pre><code class="language-javascript">var myObject = {'foo': 'bar'};
+myObject['foo'] // =&gt;'bar'
+</code></pre>
+
+<p>&hellip;and then this dictionary in Python:</p>
+
+<pre><code class="language-python">my_dictionary = {'foo': 'bar'};
+my_dictionary['foo'] // =&gt; 'bar'
+</code></pre>
+
+<p>The differences here are cosmetic - Javascript requires the var keyword to declare a variable (kind of) whereas this is not required in Python.  Also, convention states that Javascript uses camel case where Python uses underscores.  But the initialization and retrieval of key: value pairs is almost identical.</p>
+
+<p>But are Python dictionaries objects?  Technically, everything is an object in Python, but dictionaries !== objects in Javascript.  Here&rsquo;s another example of a small difference.  In Python, we can set a variable as a key in a dictionary:</p>
+
+<pre><code class="language-python">i = 'k'
+j = 1
+dict = {i: j}
+dict['k'] // =&gt; 1
+dict[i] // =&gt; 1
+</code></pre>
+
+<p>&hellip;but trying the same thing in Javascript&hellip;</p>
+
+<pre><code class="language-javascript">var i = 'k'
+var j = 1
+var obj = {i: j}
+obj['k'] // =&gt; undefined
+obj[i] // =&gt; undefined
+obj['i'] // =&gt; 1
+</code></pre>
+
+<p>Note that accessing <code>dict['i']</code> would return undefined in Python, since it would be looking for the string <code>'i'</code> as a key.  In Javascript, object keys are stored as strings and must be passed in as such when accessing with bracket notation.  Here is another example that exemplifies this.</p>
+
+<p>In javascript, we can declare a literal object like so:</p>
+
+<pre><code class="language-javascript">var obj = {name: 'Nathan'}
+console.log(obj) // =&gt; [object Object] {name: 'Nathan'}
+console.log(obj['name']) // =&gt; 'Nathan'
+</code></pre>
+
+<p>But in python we would get an error:</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; obj = {name: 'Nathan'}
+Traceback (most recent call last):
+  File &quot;&lt;input&gt;&quot;, line 1, in &lt;module&gt;
+NameError: name  'name' is not defined
+</code></pre>
+
+<p>We get the error because the variable name is undefined, so Python raises the <code>NameError</code> when given the key to obj.  In Javascript&rsquo;s literal object notation, the keys within the brackets are converted to string datatypes.  We are now getting to the core of the difference between Javascript objects and Python dictionaries - which is, well, that Javascript objects are objects with properties and methods, which can inherit from parent objects and be used as a prototype for child objects.  Python dictionaries are more akin to mapped lists, in which each key can store a pointer or piece of data.  Both languages use bracket notation as constructors for these respective datatypes - and though they look similar, they vary greatly in their behaviors.  Here is one parting example, showing how Javascript objects can contain methods while Python dictionaries can store functions but not invoke them:</p>
+
+<p>Javascript:</p>
+
+<pre><code class="language-javascript">var obj = {
+  name: 'Nathan',
+  myName: function() {return obj.name;}
+};
+
+console.log(obj.myName()) // =&gt; 'Nathan'
+</code></pre>
+
+<p>We can call the method <code>myName</code> with dot notation, which returns the property <code>name</code> in obj. However in python:</p>
+
+<pre><code class="language-python">def func():
+  return dict['name']
+
+dict = {
+  'name': 'Nathan',
+  'myName': func
+}
+
+dict['myName'] // =&gt; &lt;function func at 0x100756f28&gt;
+</code></pre>
+
+<p>Accessing <code>myName</code> in dict gives us a pointer to the function we declared earlier in the code.  It is not an object method, and thus cannot be invoked the same way we could in Javascript.  The object literal notation is a very convenient way to create and manipulate objects within Javascript, but it&rsquo;s important to recognize that it is also an abstract datatype, and the brackets are just a symbol to denote its data.</p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
