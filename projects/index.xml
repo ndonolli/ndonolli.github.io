@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects-rsses on Nathan&#39;s House of Code</title>
+    <link>https://ndonolli.github.io/projects/index.xml</link>
+    <description>Recent content in Projects-rsses on Nathan&#39;s House of Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;Asuka Suzuki&lt;/a&gt; 2016</copyright>
+    <atom:link href="https://ndonolli.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title></title>
+      <link>https://ndonolli.github.io/projects/minesweeper/README/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ndonolli.github.io/projects/minesweeper/README/</guid>
+      <description>
+
+&lt;h1 id=&#34;super-simple-minesweeper&#34;&gt;Super Simple Minesweeper&lt;/h1&gt;
+
+&lt;p&gt;A friend once told me a story of how, during an interview, they were asked to implement the hit Windows 95&amp;trade; game &amp;ldquo;Minesweeper&amp;rdquo; within a time limit.  This is my awful attempt, for science.&lt;/p&gt;
+
+&lt;h2 id=&#34;but-why&#34;&gt;But&amp;hellip;why?&lt;/h2&gt;
+
+&lt;p&gt;So that you may learn.  And I may learn.  And you may learn from what I have learned.&lt;/p&gt;
+
+&lt;h2 id=&#34;but-how&#34;&gt;But&amp;hellip;how?&lt;/h2&gt;
+
+&lt;p&gt;Just clone this repo&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git clone https://github.com/ndonolli/minesweeper-example.git&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;hellip;and open up index.html in your browser.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://ndonolli.github.io/projects/minesweeper/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ndonolli.github.io/projects/minesweeper/</guid>
+      <description>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=&#34;utf-8&#34;&gt;
+  &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width&#34;&gt;
+  &lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js&#34;&gt;&lt;/script&gt;
+  &lt;script src=&#34;index.js&#34;&gt;&lt;/script&gt;
+  &lt;style&gt;
+  h1 {
+    text-align: center;
+  }
+  table {
+    margin: 10px auto;
+  }
+  td {
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+  }
+  .bomb {
+      background-color: indianred;
+  }
+  #table-container {
+    align-content: center;
+  }
+  &lt;/style&gt;
+  &lt;title&gt;Minesweeper&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;MINESWEEPER!!&lt;/h1&gt;
+  &lt;div id=&#34;table-container&#34;&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,7 +3,12 @@
   
   <url>
     <loc>https://ndonolli.github.io/</loc>
-    <lastmod>2017-05-09T10:38:10-05:00</lastmod>
+    <lastmod>2017-05-18T15:04:06-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.github.io/post/minesweeper/</loc>
+    <lastmod>2017-05-18T15:04:06-05:00</lastmod>
   </url>
   
   <url>
@@ -39,6 +44,14 @@
   <url>
     <loc>https://ndonolli.github.io/post/objects-of-my-affliction/</loc>
     <lastmod>2016-08-02T12:02:51-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.github.io/projects/minesweeper/README/</loc>
+  </url>
+  
+  <url>
+    <loc>https://ndonolli.github.io/projects/minesweeper/</loc>
   </url>
   
 </urlset>
