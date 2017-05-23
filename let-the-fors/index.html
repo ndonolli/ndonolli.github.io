@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let the fors flow through you | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.github.io//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.github.io/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">May 9, 2017</h2>
+    <h1 class="title">Let the fors flow through you</h1>
+    <div class="content">
+      <p>What&rsquo;s wrong with <code>var</code>?  Well, a great many things, but is it really that bad?  Kind of.</p>
+
+<p>I can&rsquo;t find any good reasons where <code>var</code> gives you a legitimate advantage over <code>let</code> or <code>const</code>.  All other major languages use block scoping, and with the ES6 initiative to welcome a new <code>class</code> of developers who come from stricter, safer languages, the <code>var</code> keyword will only cause confusion.  On top of that, the light restrictions of <code>const</code> will enforce better paradigms like functional, data-driven programming and immutable data structures.</p>
+
+<p>You should absolutely use <code>let</code> on for loops to block scope your iterator.  Here&rsquo;s a case where using <code>var</code> goes too far:</p>
+
+<pre><code class="language-javascript">var funcs = [];
+
+for (var i = 0; i &lt; 3; i++) {
+  funcs[i] = function() {
+    console.log(&quot;value of i: &quot; + i);
+  }
+}
+
+funcs.forEach(func =&gt; func.call());
+
+// &quot;value of i: 3&quot;
+// &quot;value of i: 3&quot;
+// &quot;value of i: 3&quot;
+</code></pre>
+
+<p>Oh snap! Do you see it? That pesky <code>var</code> declares <code>i</code> as a global variable, so all functions in <code>func</code> access it while it is equal to 3.  Wrap it in a function, it still doesn&rsquo;t matter.  &ldquo;But what about closure?&rdquo; you ask, believing that each function in <code>func</code> should hold its own <code>i</code> in context.  This should be true, and expected since closures are another feature of functional programming languages that allow for techniques like composition.  However, due to the lack of block scope when using <code>var</code>, this unfortunately ruins that advantage. Reading David Shariff&rsquo;s article on the <a href="http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/">Javascript Execution Context</a> may clear up some things.</p>
+
+<p>Don&rsquo;t <code>let</code> yourself be fooled.  <code>let</code> and <code>const</code> are intended to replace <code>var</code>, and while we&rsquo;ll see old code on the web for quite some time, we are responsible for what developers will see in the future.</p>
+
+<p>And of course, as per the code above - all you have to do is use <code>let</code>:</p>
+
+<pre><code class="language-javascript">var funcs = [];
+
+for (let i = 0; i &lt; 3; i++) {
+  funcs[i] = function() {
+    console.log(&quot;value of i: &quot; + i);
+  }
+}
+
+funcs.forEach(func =&gt; func.call());
+
+// &quot;value of i: 0&quot;
+// &quot;value of i: 1&quot;
+// &quot;value of i: 2&quot;
+</code></pre>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+

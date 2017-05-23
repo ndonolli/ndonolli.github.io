@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Minesweeper Interview Problem | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.github.io//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.github.io/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">May 18, 2017</h2>
+    <h1 class="title">The Minesweeper Interview Problem</h1>
+    <div class="content">
+      
+
+<p>I have a friend who was asked, during a coding interview, to write their own version of minesweeper from scratch.  I found this anecdote amusing, as I have never encountered this problem during any interview I&rsquo;ve ever taken.  Sure, I&rsquo;ve gotten take home assignments that generally require real-world tasks, but never making a game from scratch.  And according to this friend, this was a <em>whiteboard</em> interview.  Tall tale or not, it&rsquo;s still a pretty neat story.</p>
+
+<p>You tell me to recreate minesweeper on a whiteboard, and my first thought is <em>&ldquo;well, at least the fall from this floor will definitely kill me&rdquo;</em>.  But hey - I thought about what it would entail and figured I&rsquo;d give myself my own coding interview, using basic javascript to create a basic minesweeper implementation in, oh say, an hour.  This post describes how I did it - the good, the bad, and the ugly - and how you can do it too.</p>
+
+<p>If you want to follow along, check out the <a href="https://github.com/ndonolli/minesweeper-example">github repository</a> and the <a href="../../projects/minesweeper/">live example</a>.</p>
+
+<h2 id="the-whiteboard">The &ldquo;Whiteboard&rdquo;</h2>
+
+<p>Yeah, right.  I did this problem on a <em>computer</em>, touching two files: <code>index.html</code> and <code>index.js</code>.  I gave myself a few restrictions to make it feel more like an interview:</p>
+
+<ol>
+<li>Basic javascript only - no frameworks, no libraries</li>
+<li>Do it within a time limit (60 minutes give or take)</li>
+</ol>
+
+<p>My plan of action was to include all logic, from the board data to the creation of HTML elements, inside the <code>index.js</code> file, and give my <code>index.html</code> file simple container elements to which I could append my rendered minesweeper board.  I planned to organize the board as a <code>&lt;table&gt;</code> of &ldquo;tiles&rdquo;, all of which would hold game data and be subscribed to event listeners to handle clicks.  This is but one of many ways to structure the game. I encourage you, dear reader, to determine a better way to do it than this idiot.</p>
+
+<p>For reference, here is what my <code>index.html</code> looked like at this point:</p>
+
+<h3 id="index-html">index.html</h3>
+
+<pre><code class="language-html">&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;index.js&quot;&gt;&lt;/script&gt;
+  &lt;title&gt;Minesweeper&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;MINESWEEPER!!&lt;/h1&gt;
+  &lt;div id=&quot;table-container&quot;&gt;
+    &lt;!--minesweeper goes here--&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p><strong>&ldquo;You&rsquo;re using jQuery?? That&rsquo;s cheating!!&rdquo;</strong></p>
+
+<p>I know, I know.  My reasoning here is that I&rsquo;m using jQuery as a familiar way to query and create simple DOM elements, and not utilizing the full capabilities of the library.  An interviewer would be more concerned with application design and logic anyway.  Which brings us to -</p>
+
+<h2 id="the-javascript">The Javascript</h2>
+
+<p>When writing a game, a common design pattern is to organize game objects as classes, in an OOP (Object-Oriented Programming) paradigm.  Given the time limit, and simplicity of the game, I deemed this method overkill for this specific case.  Instead, I took a more procedural approach, with a main function running sequential functions to initialize the game.  The structure of <code>index.js</code> would look something like this:</p>
+
+<pre><code class="language-javascript">function makeBoard() {
+  // generate data for minesweeper board
+}
+
+function renderBoard() {
+  // create HTML elements and append to #table-container element
+}
+
+function initGameRules() {
+  // initialize game rules
+}
+
+function initGame() {
+  // &quot;main&quot; function
+  makeBoard();
+  renderBoard();
+  initGameRules();
+}
+
+$(document).ready(() =&gt; {
+  initGame();
+});
+</code></pre>
+
+<p>There will be some differences, but ultimately this is how I decided to organize the code.  In a sense, it still bears some resemblance to OOP style code in a language like Java, with everything falling under an abstract &ldquo;<code>Board</code>&rdquo; class and having a <code>main</code> method (in this case, <code>initGame</code>).</p>
+
+<h2 id="making-the-board">Making the Board</h2>
+
+<p>The first thing I began working on was the <code>makeBoard</code> function, since I already had an idea of how I wanted the data structure of the minesweeper board to be organized.  I wanted to create a two-dimentional vector system using nested arrays, where accessing a tile piece at <code>(x, y)</code> could be done using the bracket notation - ex. <code>board[x][y]</code>.</p>
+
+<pre><code class="language-javascript">function makeBoard(n, bombRate) {
+  // creates n * n board of array vectors
+  // @param {n} &lt;int&gt; Specify dimension
+  // @param {bombRate} &lt;float&gt; Probability of bombs
+  // @return &lt;Array&gt; &quot;board&quot; of &lt;td&gt; elements indexed at board[i][j]
+
+  let board = [];
+
+  return board;
+}
+</code></pre>
+
+<p>At the atomic level, each element would be an object containing information about the the tile piece, such as whether the tile holds a bomb, how many bombs are in adjacent, etc.  This object I would eventually store in a <code>&lt;td&gt;</code> element&rsquo;s <code>data</code> attribute, which would later be mapped to a <code>&lt;table&gt;</code> element in <code>renderBoard</code>.  Initially I didn&rsquo;t think so far ahead, though.  The first step was to create the board data.</p>
+
+<p>I put the initialization logic within an <code>init</code> function:</p>
+
+<pre><code class="language-javascript">function init() {
+  // initializes board and randomizes bombs
+  // @param none
+  // @return void
+  for (let i = 0; i &lt; n; i++) {
+    board.push([]);
+    for (let j = 0; j &lt; n; j++) {
+      let isBomb = Math.random() &gt; bombRate ? false : true;
+      let $space = $('&lt;td&gt;').data({
+        bomb: isBomb,
+        clicked: false,
+      });
+      board[i].push($space);
+    }
+  }
+}
+</code></pre>
+
+<p>This <code>init</code> function populates our array <code>board</code> with &ldquo;bomb&rdquo; and &ldquo;no bomb&rdquo; <code>&lt;td&gt;</code> elements randomized by the <code>bombRate</code> argument passed into our parent function.  Taking cues from the existing procedural design pattern, I decided to move the logic required to calculate the adjacent bombs to another function - named <code>calculateAdjacent</code>.</p>
+
+<p>Get ready, this one is a bit of a doosey:</p>
+
+<pre><code class="language-javascript">function calculateAdjacent(i, j) {
+  // called with coords of one piece and calculates adjacent bombs
+  // used within initAdjacent
+  // @param {i} &lt;int&gt; vertical coordinate
+  // @param {j} &lt;int&gt; horizontal coordinate
+  // @return void
+  let adjacent = 0;
+
+  // get the top and bottom rows first
+  for (let x = j - 1; x &lt; j + 2; x++) {
+    // try blocks to bypass errors when board[i][j] is undefined.
+    try {
+      if (board[i-1][x].data().bomb) adjacent++; // top
+    } catch(e) {} // no handler needed, using catch like a 'continue'
+    try {
+      if (board[i+1][x].data().bomb) adjacent++; // bottom
+    } catch(e) {}
+  }
+    // left and right adjacent
+  try {
+    if (board[i][j-1].data().bomb) adjacent++;
+  } catch(e) {} // again, no handler is needed
+
+  try {
+    if (board[i][j+1].data().bomb) adjacent++;
+  } catch(e) {} // but a catch block is necessary
+  
+  return adjacent;
+}
+</code></pre>
+
+<p>I&rsquo;m not too proud of this code, primarily due to the abuse of the <code>try...catch</code> blocks.  The reason for them is this: if I&rsquo;m checking for adjacent bombs for tile <code>(i, j)</code>, I&rsquo;d need to check the perimeter of <code>i - 1</code> to <code>i + 1</code> as well as <code>j - 1</code> to <code>j + 1</code> for bombs.  If I&rsquo;m checking a tile on, say, the top edge of the board, then <code>i - 1</code> is undefined, which throws a error that short-circuits the for loop.  By encapsulating the check within a <code>try...catch</code> block, we can disregard the errors and utilize the catch block as a &ldquo;continue&rdquo; for non-existing spaces.</p>
+
+<p>Is this an elegant solution?  Far from it.  However, it solved this isolated problem and allowed me to continue on without much delay.  If you&rsquo;re following along, I challenge you to devise a better solution to this problem.</p>
+
+<p>Anyway, now that this <code>calculateAdjacent</code> function works, I can use it in a <code>setAdjacent</code> function:</p>
+
+<pre><code class="language-javascript">function setAdjacent() {
+  // traverses and calls calculateAdjacent() for each piece,
+  // storing adjacent in piece object
+  // @param none
+  // @return void
+  for (let i = 0; i &lt; n; i++) {
+    for (let j = 0; j &lt; n; j++) {
+      board[i][j].data().adjacent = calculateAdjacent(i, j);
+    }
+  }
+}
+</code></pre>
+
+<p>With that, we can call <code>init</code> and <code>setAdjacent</code> before returning our <code>board</code> of tile objects at the end of our <code>makeBoard</code> function.</p>
+
+<pre><code class="language-javascript">  // start the initialization captain!
+  init();
+  setAdjacent();
+  return board;
+}
+</code></pre>
+
+<h2 id="rendering-the-board">Rendering the Board</h2>
+
+<p>The next step is to render our <code>board</code> of <code>&lt;td&gt;</code> elements to our HTML.  jQuery allows us to accomplish this with relatively little code.  Look:</p>
+
+<pre><code class="language-javascript">function renderBoard(board) {
+  // renders board onto #tableContainer element
+  // @param {board} &lt;Array&gt; board generated from makeBoard
+  // @return void
+
+  function generateGrid(board) {
+    // appends board array (holding &lt;td&gt;) onto an html table element
+    // @param {board} &lt;Array&gt; board generated from makeBoard
+    // @return {$grid} &lt;HTML Element&gt; &lt;table&gt; elem with board &lt;td&gt; elems appended
+    let $grid = $('&lt;table&gt;');
+
+    board.forEach(elems =&gt; {
+      let $row = $('&lt;tr&gt;');
+      $row.append(elems);
+      $grid.append($row);
+    })
+
+    return $grid;
+  }
+
+  const $grid = generateGrid(board);
+  $(&quot;#table-container&quot;).empty().append($grid);
+}
+</code></pre>
+
+<p>Within <code>renderBoard</code>, I declared a <code>generateGrid</code> function, which appends each element of <code>board</code> as a row in our minesweeper table.  The main process of <code>renderBoard</code> declares the table using <code>generateGrid</code> and appends it to the existing <code>#table-container</code> element within <code>index.html</code>.</p>
+
+<p>It&rsquo;s almost time to take a deep breath and see where we stand.  Let&rsquo;s put in some styling in our HTML so that our new rendered table will look nice.</p>
+
+<h3 id="index-html-1">index.html</h3>
+
+<pre><code class="language-html">&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;index.js&quot;&gt;&lt;/script&gt;
+  &lt;style&gt;
+  h1 {
+    text-align: center;
+  }
+  table {
+    margin: 10px auto;
+  }
+  td {
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+  }
+  #table-container {
+    align-content: center;
+  }
+  &lt;/style&gt;
+  &lt;title&gt;Minesweeper&lt;/title&gt;
+&lt;/head&gt;
+</code></pre>
+
+<h2 id="setting-the-game-rules">Setting the Game Rules</h2>
+
+<p>If you&rsquo;re following along, then running your <code>index.html</code> at this point will give you an empty table.  However, clicking on the tiles does nothing.  If you recall, we stored the tile information within the HTML &ldquo;data&rdquo; attribute, which is nice because it allows our tiles to be empty HTML elements on the surface.  What I need now is to devise the logic whenever a tile is clicked - either to show the adjacent bombs, or to display the bomb if a bomb gets clicked.  Let&rsquo;s do this withn the <code>initGameRules</code> function:</p>
+
+<h3 id="index-js">index.js</h3>
+
+<pre><code class="language-javascript">function initGameRules() {
+  // sets click handlers for game logic
+  // @param none
+  // @return none
+  function togglePiece(self) {
+    // ...
+  }
+
+  function bombGoBoom() {
+    // ...
+  }
+
+  $( &quot;td&quot; ).click(function() {
+    togglePiece(this);
+    if ($(this).data().bomb) bombGoBoom();
+  });
+
+}
+</code></pre>
+
+<p>Here&rsquo;s what&rsquo;s going on here - the main function of <code>initGameRules</code> is the click handler defined at the end.  This handler is assigned to all our <code>&lt;td&gt;</code> elements (tiles) and does two things:</p>
+
+<ol>
+<li>Toggles the piece and displays whatever information is in its <code>data</code> attribute</li>
+<li>If the tile is a bomb, then end the game with <code>bombGoBoom</code></li>
+</ol>
+
+<p>Let&rsquo;s build out these two functions then.</p>
+
+<pre><code class="language-javascript">function togglePiece(self) {
+  let space = $(self).data(), txt;
+  space.clicked = true;
+
+  if (space.bomb) {
+    $(self).addClass('bomb');
+    txt = 'bomb';
+  } else {
+    txt = space.adjacent;
+  }
+  $(self).text(txt);
+}
+</code></pre>
+
+<p>For the record, the <code>self</code> parameter refers to the clicked tile element, which is the <code>this</code> context within the click handler we defined.  <code>togglePiece</code> is not a method of the tile elements, so we can&rsquo;t use <code>this</code> within the function to refer to itself.</p>
+
+<p>Other than that, all this function does is access the data attribute of the clicked tile, and renders the appropriate text - the number of adjacent bombs if the tile is clean, or the text &ldquo;bomb&rdquo; if the tile holds a bomb.  In the latter case, I also added a &ldquo;bomb&rdquo; class to that element, which can also help with some styling:</p>
+
+<h3 id="index-html-2">index.html</h3>
+
+<pre><code class="language-html">&lt;style&gt;
+  h1 {
+    text-align: center;
+  }
+  table {
+    margin: 10px auto;
+  }
+  td {
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+  }
+  &lt;!--add a bomb class--&gt;
+  .bomb {
+      background-color: indianred;
+  }
+  #table-container {
+    align-content: center;
+  }
+&lt;/style&gt;
+</code></pre>
+
+<p>Now all bomb tiles will have a red background to differenciate them from other tiles.  And what better color for bombs than an offensive name like <code>indianred</code>!</p>
+
+<p>We have one more piece of logic for our game rules - what happens when a bomb is clicked?  Well, the game should end. And at this point I was really running out of time.  What resulted was a hack:</p>
+
+<pre><code class="language-javascript">function bombGoBoom() {
+  // bomb go boom 
+  $('td').each((i, space) =&gt; togglePiece(space));
+}
+</code></pre>
+
+<p>Again, not too proud of this one.  My &ldquo;game over&rdquo; logic was to just toggle all the tiles so you can see where the rest of the bombs were.  On one hand this works, on the other hand, we can no longer set appropriate conditions for winning or losing the game, as well as extending the game with different rules, etc.</p>
+
+<p>I left this dirty code in here because, as developers, we need to embrace our shame and mistakes.  The world is not perfect, and sometimes code has got to ship.  As I showered myself clean of my disgrace (literally), I thought of several other ways I could have done this, but my time was up.  <em>Now it is your time.</em>  If you are still following along with your own minesweeper project - please, please utilize a better solution.</p>
+
+<h2 id="putting-it-all-together">Putting it All Together</h2>
+
+<p>Wrapping it up from here is trivial:</p>
+
+<pre><code class="language-javascript">function initGame(n, bombRate) {
+  // call makeBoard
+  const board = makeBoard(n, bombRate);
+  // call the function that appends board to #table-container
+  renderBoard(board);
+  // initialize gameRules
+  initGameRules();
+}
+
+$(document).ready(() =&gt; {
+  initGame(5, .25)
+})
+</code></pre>
+
+<p><code>initGame</code> will be called after the document loads with the hardcoded parameters <code>(5, .25)</code>, which is <code>5</code> for the board dimension and <code>.25</code> for the probability of bombs.  Since I ran out of time, I did not implement a way for the end user to customize their minesweeper game.  I leave this to you, along with the rest of the features of this incomplete project.  Here are some challenges you can take on yourself:</p>
+
+<ul>
+<li>Implement a way for the player to set the board size and bomb probability themselves, and render a new game based on their input.</li>
+<li>Change the game win/lose logic, where the game is lost when a bomb is clicked, and the game is won when all non-bomb tiles have been clicked.</li>
+<li>In real minesweeper, players can &ldquo;flag&rdquo; a tile they believe holds a bomb. Add this feature in.</li>
+<li>Last but not least, a time limit!</li>
+</ul>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>What I learned from this little self-test was that a seemingly big problem can be approached easily with a solid design.  Even if the design has some pitfalls and code smells, it can allow you to follow through and finish a task in a timely manner.  That is an important skill for any software developer or engineer.  I hope you&rsquo;ve learned something as well, if not at the very least how to make a simple game like minesweeper with vanilla javascript.  And who knows, maybe some day an interviewer will ask you to create minesweeper on a whiteboard.  My hope is that you will panic a little less.</p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+

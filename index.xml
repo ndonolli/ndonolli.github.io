@@ -12,10 +12,10 @@
     
     <item>
       <title>The Minesweeper Interview Problem</title>
-      <link>https://ndonolli.github.io/post/minesweeper/</link>
+      <link>https://ndonolli.github.io/minesweeper/</link>
       <pubDate>Thu, 18 May 2017 15:04:06 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/minesweeper/</guid>
+      <guid>https://ndonolli.github.io/minesweeper/</guid>
       <description>
 
 &lt;p&gt;I have a friend who was asked, during a coding interview, to write their own version of minesweeper from scratch.  I found this anecdote amusing, as I have never encountered this problem during any interview I&amp;rsquo;ve ever taken.  Sure, I&amp;rsquo;ve gotten take home assignments that generally require real-world tasks, but never making a game from scratch.  And according to this friend, this was a &lt;em&gt;whiteboard&lt;/em&gt; interview.  Tall tale or not, it&amp;rsquo;s still a pretty neat story.&lt;/p&gt;
@@ -379,10 +379,10 @@ $(document).ready(() =&amp;gt; {
     
     <item>
       <title>Let the fors flow through you</title>
-      <link>https://ndonolli.github.io/post/let-the-fors/</link>
+      <link>https://ndonolli.github.io/let-the-fors/</link>
       <pubDate>Tue, 09 May 2017 10:38:10 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/let-the-fors/</guid>
+      <guid>https://ndonolli.github.io/let-the-fors/</guid>
       <description>&lt;p&gt;What&amp;rsquo;s wrong with &lt;code&gt;var&lt;/code&gt;?  Well, a great many things, but is it really that bad?  Kind of.&lt;/p&gt;
 
 &lt;p&gt;I can&amp;rsquo;t find any good reasons where &lt;code&gt;var&lt;/code&gt; gives you a legitimate advantage over &lt;code&gt;let&lt;/code&gt; or &lt;code&gt;const&lt;/code&gt;.  All other major languages use block scoping, and with the ES6 initiative to welcome a new &lt;code&gt;class&lt;/code&gt; of developers who come from stricter, safer languages, the &lt;code&gt;var&lt;/code&gt; keyword will only cause confusion.  On top of that, the light restrictions of &lt;code&gt;const&lt;/code&gt; will enforce better paradigms like functional, data-driven programming and immutable data structures.&lt;/p&gt;
@@ -429,10 +429,10 @@ funcs.forEach(func =&amp;gt; func.call());
     
     <item>
       <title>To vim or not to vim</title>
-      <link>https://ndonolli.github.io/post/vim/</link>
+      <link>https://ndonolli.github.io/vim/</link>
       <pubDate>Thu, 04 May 2017 23:04:33 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/vim/</guid>
+      <guid>https://ndonolli.github.io/vim/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://ucarecdn.com/18f71672-5e94-4f74-9cf4-b840507509b0/&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -461,10 +461,10 @@ funcs.forEach(func =&amp;gt; func.call());
     
     <item>
       <title>at&amp;t_irl</title>
-      <link>https://ndonolli.github.io/post/att/</link>
+      <link>https://ndonolli.github.io/att/</link>
       <pubDate>Thu, 04 May 2017 12:28:36 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/att/</guid>
+      <guid>https://ndonolli.github.io/att/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://d1sui4xqepm0ps.cloudfront.net/memes/1970-at-t-subsidiary-bell-labs-deve.jpeg&#34; alt=&#34;memes can only express what words cannot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;That is all.&lt;/p&gt;
@@ -473,10 +473,10 @@ funcs.forEach(func =&amp;gt; func.call());
     
     <item>
       <title>Getting Your React Native Drawer to Behave Juuuuuuust Right</title>
-      <link>https://ndonolli.github.io/post/sexy-react-native-drawers/</link>
+      <link>https://ndonolli.github.io/sexy-react-native-drawers/</link>
       <pubDate>Tue, 18 Apr 2017 12:52:20 -0500</pubDate>
       
-      <guid>https://ndonolli.github.io/post/sexy-react-native-drawers/</guid>
+      <guid>https://ndonolli.github.io/sexy-react-native-drawers/</guid>
       <description>&lt;p&gt;The &amp;ldquo;native&amp;rdquo; half of React-native is why so many web developers get so giddy about it.  A technology that binds to native mobile platform APIs on top of the already-popular React library is a welcome addition to the new wave of web-to-mobile solutions, many of which rely on custom components rendered within webkit (which is also still great).  Where React-native shines is that your picker will look like an iOs picker, your buttons will fade that right way when you click it, and the app will just &amp;ldquo;feel&amp;rdquo; like a real app.&lt;/p&gt;
 
 &lt;p&gt;Is this a reason to make the switch?  Not really.  The importance of having a &amp;ldquo;native feeling&amp;rdquo; app weighs on the product owner, and even within react-native, certain components aren&amp;rsquo;t &lt;em&gt;quite&lt;/em&gt; there yet.&lt;/p&gt;
@@ -553,10 +553,10 @@ funcs.forEach(func =&amp;gt; func.call());
     
     <item>
       <title>A Meditation on Redux</title>
-      <link>https://ndonolli.github.io/post/redux/</link>
+      <link>https://ndonolli.github.io/redux/</link>
       <pubDate>Sat, 12 Nov 2016 18:34:37 -0600</pubDate>
       
-      <guid>https://ndonolli.github.io/post/redux/</guid>
+      <guid>https://ndonolli.github.io/redux/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve been thinking about Redux lately.  Everybody and their mother (and my mother) loves Redux, and that makes sense.  The Redux team &lt;em&gt;(read: Dan Abramov)&lt;/em&gt; bestows &lt;a href=&#34;http://redux.js.org/&#34;&gt;philosophical documentation&lt;/a&gt; that explain the three noble truths of Redux - the main one being that reducers are pure functions of state and action.  With immutable state, your application becomes much more predictable and testable.  If this sounds simple and you are asking why it isn&amp;rsquo;t just incorporated into the design of state-based rendering libraries like React, it&amp;rsquo;s because it kinda sorta is with flux, a library/design pattern used internally at Facebook of which Redux builds upon.&lt;/p&gt;
 
 &lt;p&gt;So, really, there&amp;rsquo;s not much to Redux.  But developers view it like a god damn necessity. The first page of the docs provides a plea from the creator himself on why you might not need Redux. By not using Redux, you risk introducing scalability issues as your app grows.  By including Redux, you risk wasting time writing boilerplate for your state, actions, and reducers for a view change that could have just been triggered with &lt;code&gt;setState()&lt;/code&gt;.  The only way to know if you&amp;rsquo;ll need Redux is to use it.  And even after using it, I&amp;rsquo;m still not sure what to think.&lt;/p&gt;
@@ -673,10 +673,10 @@ class Counter extends Component {
     
     <item>
       <title>Working with geolocation on a non-secure site</title>
-      <link>https://ndonolli.github.io/post/geolocation-non-secure/</link>
+      <link>https://ndonolli.github.io/geolocation-non-secure/</link>
       <pubDate>Sat, 08 Oct 2016 14:31:20 -0600</pubDate>
       
-      <guid>https://ndonolli.github.io/post/geolocation-non-secure/</guid>
+      <guid>https://ndonolli.github.io/geolocation-non-secure/</guid>
       <description>&lt;p&gt;The last couple of days, our small development team &lt;strong&gt;BrutSoft&lt;/strong&gt; was working on some legacy code written by our friend Harvey for his app &amp;ldquo;Pick-up&amp;rdquo;. It is a simple web-app that organizes pick-up soccer games, sending out texts through Twilio&amp;rsquo;s SMS service. We wanted to expand this app to work on a mobile platform through the Ionic framework, add an authentication service, and extra geolocation features.&lt;/p&gt;
 
 &lt;p&gt;I opted to implement the geolocation features, initially utilizing the HTML5 native &lt;code&gt;navigator.geolocation&lt;/code&gt; API to grab the user&amp;rsquo;s location data and search for active games within a 10km radius. It was only after I had deployed the app that I learned that &lt;a href=&#34;https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only&#34;&gt;Google has discontinued support for geolocation on non-secure domains&lt;/a&gt;. Not wanting to deal with obtaining a SSL certificate, I quickly scrambled to find a new solution.&lt;/p&gt;
@@ -752,10 +752,10 @@ class Counter extends Component {
     
     <item>
       <title>The Objects of My Affliction</title>
-      <link>https://ndonolli.github.io/post/objects-of-my-affliction/</link>
+      <link>https://ndonolli.github.io/objects-of-my-affliction/</link>
       <pubDate>Tue, 02 Aug 2016 12:02:51 -0600</pubDate>
       
-      <guid>https://ndonolli.github.io/post/objects-of-my-affliction/</guid>
+      <guid>https://ndonolli.github.io/objects-of-my-affliction/</guid>
       <description>&lt;p&gt;Javascript objects are a cozy bunch.  To define an object in javascript in the most basic, literal sense, you would write:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var myObject = {};
@@ -843,75 +843,6 @@ dict[&#39;myName&#39;] // =&amp;gt; &amp;lt;function func at 0x100756f28&amp;gt;
 
 &lt;p&gt;Accessing &lt;code&gt;myName&lt;/code&gt; in dict gives us a pointer to the function we declared earlier in the code.  It is not an object method, and thus cannot be invoked the same way we could in Javascript.  The object literal notation is a very convenient way to create and manipulate objects within Javascript, but it&amp;rsquo;s important to recognize that it is also an abstract datatype, and the brackets are just a symbol to denote its data.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://ndonolli.github.io/projects/minesweeper/README/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://ndonolli.github.io/projects/minesweeper/README/</guid>
-      <description>
-
-&lt;h1 id=&#34;super-simple-minesweeper&#34;&gt;Super Simple Minesweeper&lt;/h1&gt;
-
-&lt;p&gt;A friend once told me a story of how, during an interview, they were asked to implement the hit Windows 95&amp;trade; game &amp;ldquo;Minesweeper&amp;rdquo; within a time limit.  This is my awful attempt, for science.&lt;/p&gt;
-
-&lt;h2 id=&#34;but-why&#34;&gt;But&amp;hellip;why?&lt;/h2&gt;
-
-&lt;p&gt;So that you may learn.  And I may learn.  And you may learn from what I have learned.&lt;/p&gt;
-
-&lt;h2 id=&#34;but-how&#34;&gt;But&amp;hellip;how?&lt;/h2&gt;
-
-&lt;p&gt;Just clone this repo&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git clone https://github.com/ndonolli/minesweeper-example.git&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;hellip;and open up index.html in your browser.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://ndonolli.github.io/projects/minesweeper/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://ndonolli.github.io/projects/minesweeper/</guid>
-      <description>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;meta charset=&#34;utf-8&#34;&gt;
-  &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width&#34;&gt;
-  &lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js&#34;&gt;&lt;/script&gt;
-  &lt;script src=&#34;index.js&#34;&gt;&lt;/script&gt;
-  &lt;style&gt;
-  h1 {
-    text-align: center;
-  }
-  table {
-    margin: 10px auto;
-  }
-  td {
-    border: 1px solid;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-  }
-  .bomb {
-      background-color: indianred;
-  }
-  #table-container {
-    align-content: center;
-  }
-  &lt;/style&gt;
-  &lt;title&gt;Minesweeper&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;MINESWEEPER!!&lt;/h1&gt;
-  &lt;div id=&#34;table-container&#34;&gt;&lt;/div&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</description>
     </item>
     
   </channel>
