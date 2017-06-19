@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Tale of Two Keys | Nathan&#39;s House of Code</title>
+<link rel="stylesheet" href="https://ndonolli.github.io//css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://ndonolli.github.io/"><h1 class="title is-4">Nathan&#39;s House of Code</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/ndonolli">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://www.linkedin.com/in/nathan-donolli-51384b54">
+            <span class="icon">
+              <i class="fa fa-linkedin"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">June 19, 2017</h2>
+    <h1 class="title">A Tale of Two Keys</h1>
+    <div class="content">
+      <p>My math research teacher Mrs. K would usually explain mathematical concepts to me using stories and riddles.  On the subject of encryption, she proposed this thought problem:</p>
+
+<blockquote>
+<p><em>A man and a woman are lovers who have become separated from one another.  They can communicate through the mail, but there&rsquo;s a problem - The post office can open and read all of the mail that comes through the system.  The couple wants to exchange secrets, so they decide to send their mail locked in a box, which can be opened with a key.  This still poses a problem, since the post office can still open the box if they can obtain the key in transit.  How can the lovers exchange secret messages with each other so that the post office cannot open the box?</em></p>
+</blockquote>
+
+<p>My first thought was that the couple should meet outside the postal system and create two copies of the key for both of them to have.  In the early days of pre-digital cryptography, this was the common technique for exchanging encrypted messages.  However, this is only effective if you have a prior, secure avenue of communication to establish the keys.  If we assume that the couple (server and client) have not yet established a key, and can now only communicate through the post office (the internet), the problem merits a new solution.</p>
+
+<p>Mrs. K&rsquo;s answer to the problem is this:</p>
+
+<blockquote>
+<p><em>The man puts a lock on the box, and keeps its key in his drawer.  He sends the box to his lover, who then puts her own lock on the box and stores away its key. She sends the box back to the man who unlocks his lock with his key, to which he sends the box back to his lover who can now unlock the box with her key.</em></p>
+</blockquote>
+
+<p>This technique is the basis of <strong>public key cryptography</strong>, or asymmetric encryption, which is used to authenticate secure tunnels in both SSH and SSL protocols.  Since this is accomplished through ciphers, the metaphor of the key and the lock is a little off.  With public key cryptography, a <strong>public</strong> and a <strong>private</strong> key are mathematically derived from a random large integer.  The public &ldquo;key&rdquo;, in this case, is the lock - because the public key can be used to encrypt information but cannot be used to decrypt afterwards.  The only way to decrypt the package is to use the private key, which is held by one person and never shared.  For a great example that sticks closer to the key/lock mechanism, I found <a href="https://medium.com/@vrypan/explaining-public-key-cryptography-to-non-geeks-f0994b3c2d5">this article</a> by Panayotis Vryonis to be very helpful.</p>
+
+<p>This is a great oversimplification of the techniques involved in this process, but the abstract concept is not too difficult to grasp.  Public key cryptography provides other authentication benefits as well.  If we go back to our post office example, anybody can send a package to someone under the guise that it was sent from somewhere else (i.e. an intentionally false return address).  The same is true for an inherently unsecure network like the internet.  In public key cryptography, a woman&rsquo;s public key can be distributed and used to decrypt information that was encrypted with her private key.  This ensures that your package came from the source from which it claims to arrive from.</p>
+
+<p>The benefits from this technique of encryption, coupled with the ease of computing power at our fingertips<sup id="a1"><a href="#f1">1</a></sup>, have allowed us to operate more effectively with distributed systems.  As I mentioned before, an SSH handshake is initialized through asymmetric encryption, after which it becomes a private channel with one agreed upon secret key (symmetric encryption!).  Going back to our original thought problem, this is like the lovers exchanging the private key though their locked box, so that they can afterwards use it to open packages rather than sending it back and forth each time.  In real life, system engineers can use the SSH protocol to remotely gain access to servers without the fear of an unauthorized breach.</p>
+
+<p>As our personal information becomes more distributed and more devices join our network, this type of authentication becomes much more crucial in the realm of personal computers.  Where before, encryption was commonplace within business networks subject to attacks, it is now (sometimes) standard for communication between personal devices.  The SSL protocol, which uses digital certificates to authenticate secure HTTP connections, is rapidly becoming the new standard of the web with giants like Google <a href="https://security.googleblog.com/2016/09/moving-towards-more-secure-web.html">enforcing SSL encryption through their chrome browser</a>.  And though encryption has been around for a while, it will continue to become more prevalent in our increasingly digital lives.</p>
+
+<hr />
+
+<p><b id="f1">1:</b> The technique of public crypto keys was <a href="https://en.wikipedia.org/wiki/Public-key_cryptography#Classified_discovery">suggested in the 1970&rsquo;s</a> but was not developed to fruition due to the infancy of the current networks and lack of computing power necessary. <a href="#a1">↩</a></p>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/tanksuzuki">Asuka Suzuki</a> 2016</p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/go.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
