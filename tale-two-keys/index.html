@@ -52,7 +52,7 @@
 <p>Mrs. K&rsquo;s answer to the problem is this:</p>
 
 <blockquote>
-<p><em>The man puts a lock on the box, and keeps its key in his drawer.  He sends the box to his lover, who then puts her own lock on the box and stores away its key. She sends the box back to the man who unlocks his lock with his key, to which he sends the box back to his lover who can now unlock the box with her key.</em></p>
+<p><em>The man puts the message in the box, locks it with his own lock, and keeps its key in his drawer.  He sends the box to his lover, who then puts her own lock on the box and stores away its key. She sends the box back to the man who unlocks his lock with his key, to which he sends the box back to his lover who can now unlock the box with her key.</em></p>
 </blockquote>
 
 <p>This technique is the basis of <strong>public key cryptography</strong>, or asymmetric encryption, which is used to authenticate secure tunnels in both SSH and SSL protocols.  Since this is accomplished through ciphers, the metaphor of the key and the lock is a little off.  With public key cryptography, a <strong>public</strong> and a <strong>private</strong> key are mathematically derived from a random large integer.  The public &ldquo;key&rdquo;, in this case, is the lock - because the public key can be used to encrypt information but cannot be used to decrypt afterwards.  The only way to decrypt the package is to use the private key, which is held by one person and never shared.  For a great example that sticks closer to the key/lock mechanism, I found <a href="https://medium.com/@vrypan/explaining-public-key-cryptography-to-non-geeks-f0994b3c2d5">this article</a> by Panayotis Vryonis to be very helpful.</p>
